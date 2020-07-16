@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="PaulZero.WindowsRoutine.Wpf.Controls.DayPicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PaulZero.WindowsRoutine.Wpf.Controls"
+             xmlns:vm="clr-namespace:PaulZero.WindowsRoutine.Wpf.Models.View"
+             mc:Ignorable="d" 
+             d:DesignWidth="500"
+             Name="DayPickerControl">
+    <StackPanel>
+        <RadioButton Margin="0 0 0 4" IsChecked="{Binding ElementName=DayPickerControl, Path=IsEveryDay, Mode=TwoWay}">Daily</RadioButton>
+        <RadioButton Margin="0 0 0 4" IsChecked="{Binding ElementName=DayPickerControl, Path=IsSelectedDays, Mode=TwoWay}">Specific Days</RadioButton>
+        <Grid>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="IsEnabled" Value="False" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=DayPickerControl, Path=IsSelectedDays}" Value="True">
+                            <Setter Property="IsEnabled" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <ToggleButton Grid.Column="0" IsChecked="{Binding ElementName=DayPickerControl, Path=IsMondaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Mon</ToggleButton>
+            <ToggleButton Grid.Column="1" IsChecked="{Binding ElementName=DayPickerControl, Path=IsTuesdaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Tue</ToggleButton>
+            <ToggleButton Grid.Column="2" IsChecked="{Binding ElementName=DayPickerControl, Path=IsWednesdaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Wed</ToggleButton>
+            <ToggleButton Grid.Column="3" IsChecked="{Binding ElementName=DayPickerControl, Path=IsThursdaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Thu</ToggleButton>
+            <ToggleButton Grid.Column="4" IsChecked="{Binding ElementName=DayPickerControl, Path=IsFridaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Fri</ToggleButton>
+            <ToggleButton Grid.Column="5" IsChecked="{Binding ElementName=DayPickerControl, Path=IsSaturdaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Sat</ToggleButton>
+            <ToggleButton Grid.Column="6" IsChecked="{Binding ElementName=DayPickerControl, Path=IsSundaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Sun</ToggleButton>
+        </Grid>
+    </StackPanel>
+</UserControl>
