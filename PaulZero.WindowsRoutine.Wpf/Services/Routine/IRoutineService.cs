@@ -1,6 +1,5 @@
 ﻿using PaulZero.WindowsRoutine.Wpf.Models.View;
 using System;
-using System.Threading.Tasks;
 
 namespace PaulZero.WindowsRoutine.Wpf.Services.Routine
 {

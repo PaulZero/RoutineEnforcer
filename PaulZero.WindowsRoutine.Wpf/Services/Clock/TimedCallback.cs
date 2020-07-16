@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.Extensions.Logging;
+using System;
 
 namespace PaulZero.WindowsRoutine.Wpf.Services.Clock
 {
@@ -38,24 +37,30 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Clock
             return false;
         }
 
-        public void Invoke()
+        public void Invoke(ILogger logger)
         {
             try
             {
+                logger.LogDebug($"Invoking callback '{Id}'");
+
                 _callback.Invoke();
 
                 DailyExecutionState = TimedCallbackExecutionState.RanSuccessfully;
                 LastExecutionState = TimedCallbackExecutionState.RanSuccessfully;
             }
-            catch
+            catch (Exception exception)
             {
+                logger.LogError(exception, $"Failed to invoke callback '{Id}'.");
+
                 DailyExecutionState = TimedCallbackExecutionState.FailedToRun;
                 LastExecutionState = TimedCallbackExecutionState.FailedToRun;
             }
         }
 
-        public void ResetDailyExecutionState()
+        public void ResetDailyExecutionState(ILogger logger)
         {
+            logger.LogDebug($"Resetting daily execution state for callback '{Id}'.");
+
             DailyExecutionState = TimedCallbackExecutionState.HasNotRun;
         }
 

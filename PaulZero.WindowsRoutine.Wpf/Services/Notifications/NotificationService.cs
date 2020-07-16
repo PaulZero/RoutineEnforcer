@@ -1,8 +1,8 @@
-﻿using Microsoft.Toolkit.Uwp.Notifications;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Toolkit.Uwp.Notifications;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Windows.UI.Notifications;
@@ -20,42 +20,46 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Notifications
         private readonly ToastNotifier _toastNotifier;
 
         private readonly IDictionary<string, ToastNotification> _currentNotifications = new Dictionary<string, ToastNotification>();
+        private readonly ILogger _logger;
         private readonly IList<string> _toastsRequiringCancellation = new List<string>();
 
-        public NotificationService()
+        public NotificationService(ILogger<INotificationService> logger)
         {
+            _logger = logger;
             _toastNotifier = DesktopNotificationManagerCompat.CreateToastNotifier();
         }
 
-        public void ShowNotification(string id, string title, string message, params (string buttonLabel, string buttonArguments)[] buttons)
-        {
-            if (!CanShowNotifications)
-            {
-                throw new Exception($"Cannot show a notification: {StatusMessage}");
-            }
+        //public void ShowNotification(string id, string title, string message, params (string buttonLabel, string buttonArguments)[] buttons)
+        //{
+        //    if (!CanShowNotifications)
+        //    {
+        //        throw new Exception($"Cannot show a notification: {StatusMessage}");
+        //    }
 
-            var builder = new ToastContentBuilder()
-                .AddToastActivationInfo(default, ToastActivationType.Foreground)
-                .AddHeader(CreateHeaderId(id), title, CreateHeaderArgument(id))
-                .AddText(message);
+        //    var builder = new ToastContentBuilder()
+        //        .AddToastActivationInfo(default, ToastActivationType.Foreground)
+        //        .AddHeader(CreateHeaderId(id), title, CreateHeaderArgument(id))
+        //        .AddText(message);
 
-            if (buttons?.Any() ?? false)
-            {
-                foreach ((var buttonLabel, var buttonArgument) in buttons)
-                {
-                    builder.AddButton(buttonLabel, ToastActivationType.Foreground, buttonArgument);
-                }
-            }
+        //    if (buttons?.Any() ?? false)
+        //    {
+        //        foreach ((var buttonLabel, var buttonArgument) in buttons)
+        //        {
+        //            builder.AddButton(buttonLabel, ToastActivationType.Foreground, buttonArgument);
+        //        }
+        //    }
 
-            // And create the toast notification
-            var toast = new ToastNotification(builder.GetToastContent().GetXml());
+        //    // And create the toast notification
+        //    var toast = new ToastNotification(builder.GetToastContent().GetXml());
 
-            // And then show it
-            DesktopNotificationManagerCompat.CreateToastNotifier().Show(toast);
-        }
+        //    // And then show it
+        //    DesktopNotificationManagerCompat.CreateToastNotifier().Show(toast);
+        //}
 
         public void CancelToastNotification(Guid id)
         {
+            _logger.LogDebug($"Flagging notification with ID '{id}' for cancellation.");
+
             _toastsRequiringCancellation.Add(id.ToString());
         }
 
@@ -89,7 +93,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Notifications
                         {
                             new AdaptiveText
                             {
-                                Text = message,                                
+                                Text = message,
                             },
                             new AdaptiveProgressBar
                             {
@@ -122,7 +126,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Notifications
             var toast = new ToastNotification(toastContent.GetXml())
             {
                 Tag = toastId,
-                
+
                 Group = NotificationGroup,
                 Data = new NotificationData(initialDataValues)
                 {
@@ -161,7 +165,17 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Notifications
 
                 var updatedData = new NotificationData(updatedValues, (uint)(i + 1));
 
-                _toastNotifier.Update(updatedData, toastId, NotificationGroup);
+                var updateResult = _toastNotifier.Update(updatedData, toastId, NotificationGroup);
+
+                if (updateResult != NotificationUpdateResult.Succeeded)
+                {
+                    if (updateResult == NotificationUpdateResult.Failed)
+                    {
+                        _logger.LogError($"Failed to update notification '{toastId}'");
+                    }
+
+                    return;
+                }
             }
 
             _toastNotifier.Hide(toast);

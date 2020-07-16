@@ -1,4 +1,5 @@
-﻿using PaulZero.WindowsRoutine.Wpf.Models;
+﻿using Microsoft.Extensions.Logging;
+using PaulZero.WindowsRoutine.Wpf.Models;
 using System;
 using System.IO;
 using System.Text.Json;
@@ -12,63 +13,103 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Config
         public event Action<ScheduledEvent> EventRemoved;
 
         private readonly AppConfiguration _configuration;
+        private readonly ILogger _logger;
 
         public AppConfiguration GetAppConfiguration()
         {
             return _configuration;
         }
 
-        public ConfigService()
+        public ConfigService(ILogger<IConfigService> logger)
         {
+            _logger = logger;
             _configuration = LoadFromFile();
         }
 
         public void CreateNewScheduledEvent(ScheduledEvent scheduledEvent)
         {
-            _configuration.ScheduledEvents.Add(scheduledEvent);
+            try
+            {
+                _logger.LogDebug($"Creating scheduled event '{scheduledEvent?.Name}' and saving it to configuration.");
 
-            EventCreated?.Invoke(scheduledEvent);
+                _configuration.ScheduledEvents.Add(scheduledEvent);
 
-            SaveToFile();
+                EventCreated?.Invoke(scheduledEvent);
+
+                SaveToFile();
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, "Failed to save scheduled event to configuration.");
+            }
         }
 
         public void RemoveScheduledEvent(ScheduledEvent scheduledEvent)
         {
-            _configuration.ScheduledEvents.Remove(scheduledEvent);
+            try
+            {
+                _logger.LogDebug($"Removing scheduled event '{scheduledEvent?.Name}' from configuration.");
 
-            EventRemoved?.Invoke(scheduledEvent);
+                _configuration.ScheduledEvents.Remove(scheduledEvent);
 
-            SaveToFile();
+                EventRemoved?.Invoke(scheduledEvent);
+
+                SaveToFile();
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, "Failed to remove scheduled event from configuration.");
+            }
         }
 
         private AppConfiguration LoadFromFile()
         {
-            var filePath = GetConfigFilePath();
-
-            if (!File.Exists(filePath))
+            try
             {
+                var filePath = GetConfigFilePath();
+
+                _logger.LogDebug($"Attempting to load configuration from '{filePath}'");
+
+                if (!File.Exists(filePath))
+                {
+                    _logger.LogDebug("Configuration file does not exist, creating an empty configuration.");
+
+                    return new AppConfiguration();
+                }
+
+                var json = File.ReadAllText(filePath);
+
+                var configuration = JsonSerializer.Deserialize<AppConfiguration>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                _logger.LogDebug($"Configuration file loaded successfully, containing {configuration.ScheduledEvents.Count} event(s).");
+
+                return configuration;
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, "Failed to load configuration from file.");
+
                 return new AppConfiguration();
             }
-
-            var json = File.ReadAllText(filePath);
-
-            return JsonSerializer.Deserialize<AppConfiguration>(json, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
         }
 
         private void SaveToFile()
         {
             try
             {
+                var filePath = GetConfigFilePath();
+
+                _logger.LogDebug($"Saving configuration to '{filePath}'");
+
                 var json = JsonSerializer.Serialize(_configuration ?? new AppConfiguration(), new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true,
                     WriteIndented = true
                 });
 
-                var filePath = GetConfigFilePath();
                 var directoryPath = Path.GetDirectoryName(filePath);
 
                 if (!Directory.Exists(directoryPath))
@@ -77,17 +118,19 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Config
                 }
 
                 File.WriteAllText(filePath, json);
+
+                _logger.LogDebug("Saved configuration.");
             }
-            catch
+            catch (Exception exception)
             {
-                // TODO: Handle this
+                _logger.LogError(exception, "Failed to save configuration file.");
             }
         }
 
         private string GetConfigFilePath()
         {
             var programData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-            
+
             return Path.Combine(programData, "PaulZero", "WindowsRoutine", "config.json");
         }
     }

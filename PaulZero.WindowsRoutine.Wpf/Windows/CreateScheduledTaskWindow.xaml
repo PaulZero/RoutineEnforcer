@@ -46,7 +46,7 @@
         <controls:TimePicker SelectedTime="{Binding SelectedTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label>Days Active</Label>
-        <controls:DayPicker DaysSelected="{Binding DaysSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <controls:DayPicker DaysSelected="{Binding DaysSelected, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label>Minutes Delay</Label>
         <ComboBox SelectedItem="{Binding MinutesDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding AvailableMinutesDelay, Mode=OneTime}" />

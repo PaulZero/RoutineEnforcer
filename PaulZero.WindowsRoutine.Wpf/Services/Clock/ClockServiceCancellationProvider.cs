@@ -1,7 +1,4 @@
 ﻿using PaulZero.WindowsRoutine.Wpf.Services.Clock.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 
 namespace PaulZero.WindowsRoutine.Wpf.Services.Clock

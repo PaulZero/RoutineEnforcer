@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace PaulZero.WindowsRoutine.Wpf.Models.View
 {
-    class CreateScheduledTaskViewModel : INotifyPropertyChanged
+    internal class CreateScheduledTaskViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -98,7 +97,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Models.View
             SelectedTime = DateTime.Now.TimeOfDay;
         }
 
-        private void NotifyPropertyChanged([CallerMemberName]string propertyName = null)
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

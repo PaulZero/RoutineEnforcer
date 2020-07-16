@@ -9,6 +9,8 @@ Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "PaulZero.WindowsRoutine.Ins
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaulZero.WindowsRoutine.Wpf.Tests", "PaulZero.WindowsRoutine.Wpf.Tests\PaulZero.WindowsRoutine.Wpf.Tests.csproj", "{F3FE1604-3080-41B4-8B79-5A844B2096BD}"
 EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "PaulZero.WindowsRoutine.WixInstaller", "PaulZero.WindowsRoutine.WixInstaller\PaulZero.WindowsRoutine.WixInstaller.wixproj", "{68A97971-63D0-4CC9-9666-4ED1B65C1A29}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,18 @@ Global
 		{F3FE1604-3080-41B4-8B79-5A844B2096BD}.Release|x64.Build.0 = Release|Any CPU
 		{F3FE1604-3080-41B4-8B79-5A844B2096BD}.Release|x86.ActiveCfg = Release|Any CPU
 		{F3FE1604-3080-41B4-8B79-5A844B2096BD}.Release|x86.Build.0 = Release|Any CPU
+		{68A97971-63D0-4CC9-9666-4ED1B65C1A29}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{68A97971-63D0-4CC9-9666-4ED1B65C1A29}.Debug|ARM.ActiveCfg = Debug|x86
+		{68A97971-63D0-4CC9-9666-4ED1B65C1A29}.Debug|ARM64.ActiveCfg = Debug|x86
+		{68A97971-63D0-4CC9-9666-4ED1B65C1A29}.Debug|x64.ActiveCfg = Debug|x86
+		{68A97971-63D0-4CC9-9666-4ED1B65C1A29}.Debug|x86.ActiveCfg = Debug|x86
+		{68A97971-63D0-4CC9-9666-4ED1B65C1A29}.Debug|x86.Build.0 = Debug|x86
+		{68A97971-63D0-4CC9-9666-4ED1B65C1A29}.Release|Any CPU.ActiveCfg = Release|x86
+		{68A97971-63D0-4CC9-9666-4ED1B65C1A29}.Release|ARM.ActiveCfg = Release|x86
+		{68A97971-63D0-4CC9-9666-4ED1B65C1A29}.Release|ARM64.ActiveCfg = Release|x86
+		{68A97971-63D0-4CC9-9666-4ED1B65C1A29}.Release|x64.ActiveCfg = Release|x86
+		{68A97971-63D0-4CC9-9666-4ED1B65C1A29}.Release|x86.ActiveCfg = Release|x86
+		{68A97971-63D0-4CC9-9666-4ED1B65C1A29}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

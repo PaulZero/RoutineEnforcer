@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PaulZero.WindowsRoutine.Wpf.Services.Clock
+﻿namespace PaulZero.WindowsRoutine.Wpf.Services.Clock
 {
     public enum TimedCallbackExecutionState
     {

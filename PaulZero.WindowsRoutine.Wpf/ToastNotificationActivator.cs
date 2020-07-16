@@ -8,7 +8,7 @@ namespace PaulZero.WindowsRoutine.Wpf
 {
     [ClassInterface(ClassInterfaceType.None)]
     [ComSourceInterfaces(typeof(INotificationActivationCallback))]
-    [Guid("3F1007CD-7EDE-41E2-8F30-2BD4C1A44FB1")]
+    [Guid("7490a6b4-7d4d-46aa-a341-10e48a50c5c4")]
     [ComVisible(true)]
     public class ToastNotificationActivator : NotificationActivator
     {

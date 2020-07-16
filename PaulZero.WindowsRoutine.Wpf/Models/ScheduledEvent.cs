@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -38,7 +37,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Models
         }
 
         public DaySelection DaysScheduled { get; set; }
-        
+
 
         [JsonIgnore]
         public DateTime WarningDateTime => DateTime.Today.Add(WarningTime);

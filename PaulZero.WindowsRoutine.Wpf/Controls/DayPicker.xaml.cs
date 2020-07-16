@@ -1,6 +1,4 @@
 ﻿using PaulZero.WindowsRoutine.Wpf.Models;
-using PaulZero.WindowsRoutine.Wpf.Models.View;
-using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -21,7 +19,12 @@ namespace PaulZero.WindowsRoutine.Wpf.Controls
         public DaySelection DaysSelected
         {
             get { return GetValue(DaysSelectedProperty) as DaySelection; }
-            set { SetValue(DaysSelectedProperty, value); }
+            set
+            {
+                SetValue(DaysSelectedProperty, value);
+
+                NotifyPropertyChanged();
+            }
         }
 
         public bool IsEveryDay

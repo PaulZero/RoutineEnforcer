@@ -1,4 +1,5 @@
-﻿using PaulZero.WindowsRoutine.Wpf.Models;
+﻿using Microsoft.Extensions.Logging;
+using PaulZero.WindowsRoutine.Wpf.Models;
 using PaulZero.WindowsRoutine.Wpf.Models.View;
 using PaulZero.WindowsRoutine.Wpf.Services.Actions;
 using PaulZero.WindowsRoutine.Wpf.Services.Clock.Interfaces;
@@ -17,15 +18,17 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Routine
         private readonly IActionService _actionService;
         private readonly IClockService _clockService;
         private readonly IConfigService _configService;
+        private readonly ILogger _logger;
         private readonly INotificationService _notificationService;
         private readonly List<ScheduledEventTimedCallback> _timedScheduledEvents = new List<ScheduledEventTimedCallback>();
         private readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
 
-        public RoutineService(IActionService actionService, IClockService clockService, IConfigService configService, INotificationService notificationService)
+        public RoutineService(IActionService actionService, IClockService clockService, IConfigService configService, INotificationService notificationService, ILogger<IRoutineService> logger)
         {
             _actionService = actionService;
             _clockService = clockService;
             _configService = configService;
+            _logger = logger;
             _notificationService = notificationService;
 
             _configService.EventCreated += AddEventToTimingService;
@@ -45,9 +48,9 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Routine
 
         public void Start()
         {
-            _clockService.RemoveAllCallbacks();
+            _logger.LogDebug("Starting the routine service.");
 
-            var first = true;
+            _clockService.RemoveAllCallbacks();
 
             foreach (var scheduledEvent in _configService.GetAppConfiguration().ScheduledEvents)
             {
@@ -59,16 +62,27 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Routine
 
         private void AddEventToTimingService(ScheduledEvent scheduledEvent)
         {
-            if (_timedScheduledEvents.Any(s => s.ScheduledEventId == scheduledEvent.Id))
+            try
             {
-                throw new Exception($"A scheduled event already exists in the timing service with that ID!");
+                _logger.LogDebug($"Adding '{scheduledEvent?.Name}' to the clock service.");
+
+                if (_timedScheduledEvents.Any(s => s.ScheduledEventId == scheduledEvent.Id))
+                {
+                    _logger.LogError($"The scheduled event '{scheduledEvent?.Name}' already exists in the clock service and won't be added.");
+
+                    return;
+                }
+
+                var timedCallback = new ScheduledEventTimedCallback(scheduledEvent, ShowWarningNotification);
+
+                _timedScheduledEvents.Add(timedCallback);
+
+                _clockService.RegisterCallback(timedCallback);
             }
-
-            var timedCallback = new ScheduledEventTimedCallback(scheduledEvent, ShowWarningNotification);
-
-            _timedScheduledEvents.Add(timedCallback);
-
-            _clockService.RegisterCallback(timedCallback);
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, $"Failed to add scheduled event '{scheduledEvent?.Name}' to the clock service.");
+            }
         }
 
         private void RemoveEventFromTimingService(ScheduledEvent scheduledEvent)

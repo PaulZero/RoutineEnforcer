@@ -1,6 +1,5 @@
 ﻿using Hardcodet.Wpf.TaskbarNotification;
 using Microsoft.Extensions.DependencyInjection;
-using PaulZero.WindowsRoutine.Wpf.Models;
 using PaulZero.WindowsRoutine.Wpf.Services.Config;
 using PaulZero.WindowsRoutine.Wpf.Services.Notifications;
 using PaulZero.WindowsRoutine.Wpf.Services.Routine;

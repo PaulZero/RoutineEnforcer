@@ -1,7 +1,6 @@
 ﻿using PaulZero.WindowsRoutine.Wpf.Models;
 using PaulZero.WindowsRoutine.Wpf.Services.Clock;
 using System;
-using System.Threading.Tasks;
 
 namespace PaulZero.WindowsRoutine.Wpf.Services.Routine
 {

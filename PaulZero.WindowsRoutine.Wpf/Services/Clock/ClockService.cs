@@ -1,9 +1,10 @@
-﻿using PaulZero.WindowsRoutine.Wpf.Services.Clock.Interfaces;
+﻿using Microsoft.Extensions.Logging;
+using PaulZero.WindowsRoutine.Wpf.Services.Clock.Interfaces;
+using PaulZero.WindowsRoutine.Wpf.Services.Routine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.Globalization.NumberFormatting;
 
 namespace PaulZero.WindowsRoutine.Wpf.Services.Clock
 {
@@ -13,45 +14,69 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Clock
 
         private readonly List<TimedCallback> _callbacks = new List<TimedCallback>();
         private readonly IClockServiceCancellationProvider _cancellationProvider;
+        private readonly ILogger _logger;
         private readonly IClockServiceTimeProvider _timeProvider;
         private DateTime _lastExecutionTime = default;
 
-        public ClockService() : this(new ClockServiceCancellationProvider(), new ClockServiceTimeProvider())
+        public ClockService(ILogger<IClockService> logger) : this(new ClockServiceCancellationProvider(), logger, new ClockServiceTimeProvider())
         {
         }
 
-        public ClockService(IClockServiceCancellationProvider cancellationProvider, IClockServiceTimeProvider timeProvider)
+        public ClockService(IClockServiceCancellationProvider cancellationProvider, ILogger<IClockService> logger, IClockServiceTimeProvider timeProvider)
         {
             _cancellationProvider = cancellationProvider ?? throw new ArgumentNullException(nameof(cancellationProvider));
+            _logger = logger;
             _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
         public void RegisterCallback(TimedCallback callback)
         {
+            if (callback is ScheduledEventTimedCallback s)
+            {
+                _logger.LogDebug($"Scheduled event '{s?.ScheduledEvent?.Name}' received and registered with clock service using ID '{s.Id}'.");
+            }
+
             _callbacks.Add(callback);
         }
 
         public bool RemoveCallback(string callbackId)
         {
-            var existingCallback = _callbacks.FirstOrDefault(c => c.Id == callbackId);
-
-            if (existingCallback != null)
+            try
             {
+                _logger.LogDebug($"Removing callback referenced by ID {callbackId}");
+
+                var existingCallback = _callbacks.FirstOrDefault(c => c.Id == callbackId);
+
+                if (existingCallback == null)
+                {
+                    _logger.LogError($"Unable to find callback referenced by ID '{callbackId}'");
+
+                    return false;
+                }
+
                 _callbacks.Remove(existingCallback);
 
                 return true;
             }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, $"Unable to remove callback referenced by ID {callbackId}");
 
-            return false;
+                return false;
+            }
         }
 
         public void RemoveAllCallbacks()
         {
+            _logger.LogDebug($"Removing all callbacks from the clock service.");
+
             _callbacks.Clear();
         }
 
         public void Start()
         {
+            _logger.LogDebug("Starting clock service.");
+
             _cancellationProvider.Prepare();
 
             _timingTask = Task.Run(RunLoop);
@@ -59,16 +84,22 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Clock
 
         public void Stop()
         {
+            _logger.LogDebug("Stopping clock service");
+
             _cancellationProvider.Cancel();
         }
 
         private async Task RunLoop()
         {
+            _logger.LogDebug("Starting clock service loop");
+
             var currentTime = _timeProvider.GetCurrentTime();
 
             if (_lastExecutionTime == default)
             {
                 _lastExecutionTime = currentTime;
+
+                _logger.LogDebug($"No last execution time set, initialising to {_lastExecutionTime}");
             }
 
             if (currentTime.Second > 1)
@@ -97,6 +128,8 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Clock
 
         private async Task CatchUpToNextMinute(DateTime currentTime)
         {
+            _logger.LogDebug("Fast forwarding to next minute.");
+
             var nextMinute = currentTime.AddMinutes(1);
 
             await Task.Run(async () =>
@@ -116,7 +149,9 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Clock
             {
                 if (callback.IsDue(currentTime))
                 {
-                    callback.Invoke();
+                    _logger.LogDebug($"Invoking callback identified by ID '{callback.Id}'.");
+
+                    callback.Invoke(_logger);
                 }
             }
         }
@@ -125,7 +160,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Clock
         {
             foreach (var callback in _callbacks)
             {
-                callback.ResetDailyExecutionState();
+                callback.ResetDailyExecutionState(_logger);
             }
         }
 

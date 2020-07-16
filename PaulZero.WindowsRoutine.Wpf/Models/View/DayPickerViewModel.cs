@@ -1,6 +1,4 @@
-﻿using System.Windows.Input;
-
-namespace PaulZero.WindowsRoutine.Wpf.Models.View
+﻿namespace PaulZero.WindowsRoutine.Wpf.Models.View
 {
     public class DayPickerViewModel : AbstractViewModel
     {

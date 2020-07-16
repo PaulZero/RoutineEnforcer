@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PaulZero.WindowsRoutine.Wpf.Services;
 using PaulZero.WindowsRoutine.Wpf.Services.Clock;
 using PaulZero.WindowsRoutine.Wpf.Services.Clock.Interfaces;
@@ -20,7 +21,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Tests.Services.Clock
             var startTime = DateTime.Today;
             var cancellationProvider = new TestClockServiceCancellationProvider();
             var timeProvider = new TestClockServiceTimeProvider(TimeSpan.FromTicks(100), startTime, cancellationProvider, startTime.AddDays(1));
-            using var clockService = new ClockService(cancellationProvider, timeProvider);
+            using var clockService = new ClockService(cancellationProvider, new NullLogger<IClockService>(), timeProvider);
 
             var currentTime = startTime;
             var endTime = currentTime.AddDays(1);
@@ -68,7 +69,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Tests.Services.Clock
 
             var cancellationProvider = new TestClockServiceCancellationProvider();
             var timeProvider = new TestClockServiceTimeProvider(TimeSpan.FromTicks(100), startTime, cancellationProvider, startTime.AddDays(30));
-            using var clockService = new ClockService(cancellationProvider, timeProvider);
+            using var clockService = new ClockService(cancellationProvider, new NullLogger<IClockService>(), timeProvider);
 
             clockService.Start();
 
@@ -104,7 +105,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Tests.Services.Clock
 
             var cancellationProvider = new TestClockServiceCancellationProvider();
             var timeProvider = new TestClockServiceTimeProvider(TimeSpan.FromTicks(100), startTime, cancellationProvider, startTime.AddDays(1));
-            using var clockService = new ClockService(cancellationProvider, timeProvider);
+            using var clockService = new ClockService(cancellationProvider, new NullLogger<IClockService>(), timeProvider);
 
             var currentTime = startTime.AddHours(1); // Start an hour in so there's no awful race condition for cancellation
             var endTime = startTime.AddDays(1);
