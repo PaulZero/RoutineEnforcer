@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="Routine Enforcer" Language="1033" Version="1.0.0.0" Manufacturer="PaulZero" UpgradeCode="3ae70114-f321-41cb-83f0-8a4b565c1b49">
+	<Product Id="*" Name="Routine Enforcer" Language="1033" Version="0.1.0.0" Manufacturer="PaulZero" UpgradeCode="3ae70114-f321-41cb-83f0-8a4b565c1b49">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-		<MediaTemplate />
+		<MediaTemplate EmbedCab="yes" />
 
 		<Feature Id="ProductFeature" Title="PaulZero.WindowsRoutine.WixInstaller" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
@@ -28,40 +28,26 @@
       <Component Id="PaulZero.WindowsRoutine.Wpf.exe" Guid="27d50ce1-7673-45e8-9b52-93b749c2fea0">
         <File Source="$(var.PaulZero.WindowsRoutine.Wpf.TargetDir)\publish\PaulZero.WindowsRoutine.Wpf.exe" />
       </Component>
-      <!--<Component Id="PaulZero.WindowsRoutine.Wpf.dll" Guid="12fb894a-59db-4786-a7e2-cbaa10b4137c">
-        <File Source="$(var.PaulZero.WindowsRoutine.Wpf.TargetDir)PaulZero.WindowsRoutine.Wpf.dll" />
+      <Component Id="Readme.md" Guid="12fb894a-59db-4786-a7e2-cbaa10b4137c">
+        <File Source="$(var.PaulZero.WindowsRoutine.Wpf.ProjectDir)\Readme.md" />
       </Component>
-      <Component Id="clock_icon.ico" Guid="417f9c95-7221-43fd-9e8e-d4d768237cae">
-        <File Source="$(var.PaulZero.WindowsRoutine.Wpf.TargetDir)clock_icon.ico" />
-      </Component>
-      <Component Id="Hardcodet.Wpf.TaskbarNotification.dll" Guid="efd42514-796a-4429-b411-1e0f5755f7ed">
-        <File Source="$(var.PaulZero.WindowsRoutine.Wpf.TargetDir)Hardcodet.Wpf.TaskbarNotification.dll" />
-      </Component>
-      <Component Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll" Guid="71f7d747-31c4-4e2a-a8a4-1a765c9352ac">
-        <File Source="$(var.PaulZero.WindowsRoutine.Wpf.TargetDir)Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
-      </Component>
-      <Component Id="Microsoft.Extensions.DependencyInjection.dll" Guid="7a620cfa-3f3c-4c84-ac5c-d337589bf096">
-        <File Source="$(var.PaulZero.WindowsRoutine.Wpf.TargetDir)Microsoft.Extensions.DependencyInjection.dll" />
-      </Component>
-      <Component Id="Microsoft.Toolkit.Uwp.Notifications.dll" Guid="0d633d92-1e48-4e12-87da-9c6de3043659">
-        <File Source="$(var.PaulZero.WindowsRoutine.Wpf.TargetDir)Microsoft.Toolkit.Uwp.Notifications.dll" />
-      </Component>-->
 		</ComponentGroup>
 	</Fragment>
 
   <Fragment>
     <DirectoryRef Id="ApplicationProgramsFolder">      
-      <Component Id="ApplicationShortcut" Guid="eefb4d37-7cc4-4d13-8e2d-16210aad9d68">
+      <Component Id="ApplicationShortcut" Guid="eefb4d37-7cc4-4d13-8e2d-16210aad9d68">        
         <Shortcut Id="ApplicationStartMenuShortcut"
                   Name="Routine Enforcer"
                   Description="Stops time blindness from keeping you stuck to your computer until 3am"
                   Target="[#PaulZero.WindowsRoutine.Wpf.exe]"
-                  WorkingDirectory="INSTALLFOLDER">
+                  WorkingDirectory="INSTALLFOLDER">          
           <ShortcutProperty Key="System.AppUserModel.ID" Value="PaulZero.WindowsRoutine" />
           <ShortcutProperty Key="System.AppUserModel.ToastActivatorCLSID" Value="{7490a6b4-7d4d-46aa-a341-10e48a50c5c4}"/>
-        </Shortcut>
+        </Shortcut>        
         <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
-        <RegistryValue Root="HKCU" Key="Software\PaulZero\RoutineEnforcer" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+        <RegistryValue Root="HKCU" Key="Software\PaulZero\RoutineEnforcer\Shortcuts" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+        <RegistryValue Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion\Run" Name="RoutineEnforcer" Type="string" Value="[ApplicationProgramsFolder]Routine Enforcer.lnk" />
       </Component>
     </DirectoryRef>
   </Fragment>

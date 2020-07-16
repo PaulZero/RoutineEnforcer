@@ -5,6 +5,7 @@ using PaulZero.WindowsRoutine.Wpf.Services.Notifications;
 using PaulZero.WindowsRoutine.Wpf.Services.Routine;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows;
@@ -89,7 +90,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Windows
             Environment.Exit(0);
         }
 
-        private void ScheduleEvent_Click(object sender, RoutedEventArgs e)
+        private void ScheduleEventMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var window = new CreateScheduledTaskWindow();
 
@@ -99,6 +100,57 @@ namespace PaulZero.WindowsRoutine.Wpf.Windows
 
                 configService.CreateNewScheduledEvent(window.CreateScheduledEvent());
             }
+        }
+
+        private void ReadmeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var readmePath = Path.Combine(Environment.CurrentDirectory, "Readme.md");
+
+            if (File.Exists(readmePath))
+            {
+                Process.Start("notepad", readmePath);
+            }
+            else
+            {
+                MessageBox.Show(
+                    "Sorry, the readme file could not be found, if you have a bug please find me on Twitter @PaulZer0",
+                    "No Readme",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error,
+                    MessageBoxResult.OK,
+                    MessageBoxOptions.DefaultDesktopOnly);
+            }
+        }
+
+        private void EditConfigMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var programData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            var appDataDirectory = Path.Combine(programData, "PaulZero", "WindowsRoutine");
+            var configFilePath = Path.Combine(appDataDirectory, "config.json");
+
+            if (!File.Exists(configFilePath))
+            {
+                MessageBox.Show(
+                    "A config file has not yet been created, you will need to schedule some events first.",
+                    "No Configuration File",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning,
+                    MessageBoxResult.OK,
+                    MessageBoxOptions.DefaultDesktopOnly);
+
+                return;
+            }
+
+            MessageBox.Show(
+                    "You will need to restart the application if you make any changes to the config file, it is not " +
+                    "recommended that you edit this file unless you understand JSON.",
+                    "Configuration",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning,
+                    MessageBoxResult.OK,
+                    MessageBoxOptions.DefaultDesktopOnly);
+
+            Process.Start("notepad", configFilePath);
         }
     }
 }

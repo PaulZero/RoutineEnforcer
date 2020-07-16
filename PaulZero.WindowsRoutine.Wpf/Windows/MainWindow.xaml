@@ -29,7 +29,11 @@
             </tb:TaskbarIcon.TrayToolTip>
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Schedule Event" Click="ScheduleEvent_Click" />
+                    <MenuItem Header="Schedule Event" Click="ScheduleEventMenuItem_Click" />
+                    <Separator />
+                    <MenuItem Header="Edit Config" Click="EditConfigMenuItem_Click" />
+                    <MenuItem Header="Readme" Click="ReadmeMenuItem_Click" />
+                    <Separator />
                     <MenuItem Header="Quit" Click="QuitMenuItem_Click" />
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
