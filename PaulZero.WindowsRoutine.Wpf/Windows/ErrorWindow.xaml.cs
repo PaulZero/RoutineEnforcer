@@ -1,4 +1,4 @@
-﻿using PaulZero.WindowsRoutine.Wpf.Models.View;
+﻿using PaulZero.WindowsRoutine.Wpf.Models.View.Window;
 using System;
 using System.Windows;
 

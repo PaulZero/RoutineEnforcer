@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using PaulZero.WindowsRoutine.Wpf.Models.View;
+using PaulZero.WindowsRoutine.Wpf.Models.View.Window;
 using PaulZero.WindowsRoutine.Wpf.Windows;
 using System;
 using System.Threading.Tasks;

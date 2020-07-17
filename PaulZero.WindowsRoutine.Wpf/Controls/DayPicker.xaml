@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PaulZero.WindowsRoutine.Wpf.Controls"
-             xmlns:vm="clr-namespace:PaulZero.WindowsRoutine.Wpf.Models.View"
+             xmlns:vmc="clr-namespace:PaulZero.WindowsRoutine.Wpf.Models.View.Control"
              mc:Ignorable="d" 
              d:DesignWidth="500"
              Name="DayPickerControl">
@@ -12,7 +12,7 @@
         <ResourceDictionary Source="../AppStyles.xaml"/>
     </UserControl.Resources>
     <UserControl.DataContext>
-        <vm:DayPickerViewModel />
+        <vmc:DayPickerViewModel />
     </UserControl.DataContext>
     
     <StackPanel>

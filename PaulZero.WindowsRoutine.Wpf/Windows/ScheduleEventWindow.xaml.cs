@@ -1,5 +1,5 @@
 ﻿using PaulZero.WindowsRoutine.Wpf.Models;
-using PaulZero.WindowsRoutine.Wpf.Models.View;
+using PaulZero.WindowsRoutine.Wpf.Models.View.Window;
 using System;
 using System.Windows;
 
@@ -8,15 +8,15 @@ namespace PaulZero.WindowsRoutine.Wpf.Windows
     /// <summary>
     /// Interaction logic for CreateScheduledTaskWindow.xaml
     /// </summary>
-    public partial class CreateScheduledTaskWindow : Window
+    public partial class ScheduleEventWindow : Window
     {
-        public CreateScheduledTaskViewModel ViewModel
+        public ScheduleEventWindowViewModel ViewModel
         {
-            get => DataContext as CreateScheduledTaskViewModel;
+            get => DataContext as ScheduleEventWindowViewModel;
             set => DataContext = value;
         }
 
-        public CreateScheduledTaskWindow()
+        public ScheduleEventWindow()
         {
             InitializeComponent();
 
@@ -35,7 +35,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Windows
                 Name = ViewModel.Name,
                 WarningTime = ViewModel.SelectedTime,
                 ActionDelay = TimeSpan.FromMinutes(ViewModel.MinutesDelay),
-                ActionType = ViewModel.ActionType,
+                ActionType = ViewModel.ActionType.ActionType,
                 DaysScheduled = ViewModel.DaysSelected
             };
         }

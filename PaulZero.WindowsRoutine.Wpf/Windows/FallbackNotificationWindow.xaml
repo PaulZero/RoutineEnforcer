@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PaulZero.WindowsRoutine.Wpf.Windows"
-        xmlns:view="clr-namespace:PaulZero.WindowsRoutine.Wpf.Models.View"
+        xmlns:vmw="clr-namespace:PaulZero.WindowsRoutine.Wpf.Models.View.Window"
         mc:Ignorable="d"
         Title="{Binding Title}"
         SizeToContent="WidthAndHeight"
@@ -15,7 +15,7 @@
         <ResourceDictionary Source="../AppStyles.xaml" />
     </Window.Resources>
     <Window.DataContext>
-        <view:FallbackNotificationWindowViewModel />
+        <vmw:FallbackNotificationWindowViewModel />
     </Window.DataContext>
     <StackPanel Style="{StaticResource DialogRoot}">
         <TextBlock Style="{StaticResource DialogHeader}" Text="{Binding Message}" />

@@ -7,9 +7,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
-namespace PaulZero.WindowsRoutine.Wpf.Models.View
+namespace PaulZero.WindowsRoutine.Wpf.Models.View.Window
 {
-    public class CreateScheduledTaskViewModel : AbstractViewModel
+    public class ScheduleEventWindowViewModel : AbstractViewModel
     {
         public event Action<bool> DialogResultSet;
 
@@ -61,7 +61,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Models.View
         }
 
         [Required]
-        public EventActionType ActionType
+        public EventActionTypeViewModel ActionType
         {
             get => _actionType;
             set
@@ -86,10 +86,10 @@ namespace PaulZero.WindowsRoutine.Wpf.Models.View
 
         public IEnumerable<int> AvailableMinutesDelay { get; } = Enumerable.Range(1, 60);
 
-        public IEnumerable<EventActionType> AvailableActionTypes { get; } = new[]
+        public IEnumerable<EventActionTypeViewModel> AvailableActionTypes { get; } = new[]
         {
-            EventActionType.LockScreen,
-            EventActionType.SleepComputer
+            new EventActionTypeViewModel(EventActionType.LockScreen),
+            new EventActionTypeViewModel(EventActionType.SleepComputer)
         };
 
         public ICommand CancelCommand => _cancelCommand;
@@ -101,17 +101,19 @@ namespace PaulZero.WindowsRoutine.Wpf.Models.View
         private string _name;
         private TimeSpan _selectedTime;
         private int _minutesDelay = 15;
-        private EventActionType _actionType = EventActionType.LockScreen;
+        private EventActionTypeViewModel _actionType;
 
         private readonly CallbackCommand _cancelCommand;
         private readonly CallbackCommand _scheduleEventCommand;
 
-        public CreateScheduledTaskViewModel()
+        public ScheduleEventWindowViewModel()
         {
             _cancelCommand = new CallbackCommand(Cancel);
             _scheduleEventCommand = new CallbackCommand(CanScheduleEvent, ScheduleEvent);
 
             SelectedTime = DateTime.Now.TimeOfDay;
+
+            _actionType = AvailableActionTypes.First(t => t.ActionType == EventActionType.LockScreen);
         }
 
         protected override void NotifyPropertyChanged([CallerMemberName] string propertyName = null)

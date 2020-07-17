@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PaulZero.WindowsRoutine.Wpf.Models.View
+namespace PaulZero.WindowsRoutine.Wpf.Models.View.Window
 {
     public class FallbackNotificationWindowViewModel : AbstractViewModel, IDisposable
     {
@@ -85,7 +85,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Models.View
 
         private int CalculateProgressPercentage(TimeSpan remaining)
         {
-            return (int)Math.Round((100 / _delay.TotalSeconds) * remaining.TotalSeconds);
+            return (int)Math.Round(100 / _delay.TotalSeconds * remaining.TotalSeconds);
         }
 
         private string FormatTimeRemaining(TimeSpan remaining)

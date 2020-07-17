@@ -1,5 +1,5 @@
 ﻿using PaulZero.WindowsRoutine.Wpf.Models;
-using PaulZero.WindowsRoutine.Wpf.Models.View;
+using PaulZero.WindowsRoutine.Wpf.Models.View.Control;
 using System;
 using System.ComponentModel;
 using System.Windows;

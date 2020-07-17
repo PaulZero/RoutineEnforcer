@@ -1,11 +1,11 @@
-﻿<Window x:Class="PaulZero.WindowsRoutine.Wpf.Windows.CreateScheduledTaskWindow"
+﻿<Window x:Class="PaulZero.WindowsRoutine.Wpf.Windows.ScheduleEventWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PaulZero.WindowsRoutine.Wpf"
         xmlns:controls="clr-namespace:PaulZero.WindowsRoutine.Wpf.Controls"
-        xmlns:view="clr-namespace:PaulZero.WindowsRoutine.Wpf.Models.View"
+        xmlns:vmw="clr-namespace:PaulZero.WindowsRoutine.Wpf.Models.View.Window"
         mc:Ignorable="d"
         Title="Schedule new event"
         Width="600"
@@ -18,7 +18,7 @@
         <ResourceDictionary Source="../AppStyles.xaml"/>
     </Window.Resources>
     <Window.DataContext>
-        <view:CreateScheduledTaskViewModel />
+        <vmw:ScheduleEventWindowViewModel />
     </Window.DataContext>
     <StackPanel Style="{StaticResource DialogRoot}">
         <TextBlock Style="{StaticResource DialogHeader}">Schedule new event</TextBlock>
@@ -42,7 +42,7 @@
                 DaysSelected="{
                     Binding ElementName=CreateScheduledEventWindow,
                     Path=DataContext.DaysSelected,
-                    Mode=TwoWay,
+                    Mode=OneWayToSource,
                     UpdateSourceTrigger=PropertyChanged,
                     ValidatesOnDataErrors=True}" />
 
@@ -55,6 +55,7 @@
             <TextBlock Style="{StaticResource DialogBodyHeading}">Action Type</TextBlock>
             <ComboBox
                 Style="{StaticResource ValidatedDialogBodyComboBox}"
+                DisplayMemberPath="Description"
                 SelectedItem="{Binding ActionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                 ItemsSource="{Binding AvailableActionTypes, Mode=OneTime}" />
         </StackPanel>

@@ -1,7 +1,7 @@
 ﻿using PaulZero.WindowsRoutine.Wpf.Models.Commands;
 using System.Windows.Input;
 
-namespace PaulZero.WindowsRoutine.Wpf.Models.View
+namespace PaulZero.WindowsRoutine.Wpf.Models.View.Control
 {
     public class DayPickerViewModel : AbstractViewModel
     {

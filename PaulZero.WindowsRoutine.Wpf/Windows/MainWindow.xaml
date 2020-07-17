@@ -4,7 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PaulZero.WindowsRoutine.Wpf"
-        xmlns:tb="http://www.hardcodet.net/taskbar" xmlns:controls="clr-namespace:PaulZero.WindowsRoutine.Wpf.Controls"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        xmlns:controls="clr-namespace:PaulZero.WindowsRoutine.Wpf.Controls"
+        xmlns:vmc="clr-namespace:PaulZero.WindowsRoutine.Wpf.Models.View.Control"
+        xmlns:vmw="clr-namespace:PaulZero.WindowsRoutine.Wpf.Models.View.Window"
         mc:Ignorable="d"
         Title="Routine Manager"
         SizeToContent="WidthAndHeight"
@@ -12,11 +15,20 @@
         ShowInTaskbar="False"
         Focusable="False"
         WindowStyle="None"
-        WindowStartupLocation="CenterScreen" Background="Transparent" BorderBrush="Transparent">
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent"
+        BorderBrush="Transparent"
+        Icon="{Binding ApplicationIcon}"
+        Visibility="{Binding Visibility}">
+    <Window.DataContext>
+        <vmw:MainWindowViewModel />
+    </Window.DataContext>
 
     <Grid Background="Transparent">
-        <tb:TaskbarIcon
-            x:Name="TaskbarIcon">
+        <tb:TaskbarIcon Name="TaskbarIcon">
+            <tb:TaskbarIcon.DataContext>
+                <vmc:TaskBarIconViewModel />
+            </tb:TaskbarIcon.DataContext>
             <tb:TaskbarIcon.TrayToolTip>
                 <Grid>
                     <Border Padding="8" Background="LightSteelBlue" CornerRadius="4" Opacity="0.4" />
@@ -29,12 +41,12 @@
             </tb:TaskbarIcon.TrayToolTip>
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Schedule Event" Click="ScheduleEventMenuItem_Click" />
+                    <MenuItem Header="Schedule Event" Command="{Binding ScheduleEventCommand}" />
                     <Separator />
-                    <MenuItem Header="Edit Config" Click="EditConfigMenuItem_Click" />
-                    <MenuItem Header="Readme" Click="ReadmeMenuItem_Click" />
+                    <MenuItem Header="Edit Config" Command="{Binding EditConfigCommand}" />
+                    <MenuItem Header="Readme" Command="{Binding ViewReadmeCommand}" />
                     <Separator />
-                    <MenuItem Header="Quit" Click="QuitMenuItem_Click" />
+                    <MenuItem Header="Quit" Command="{Binding QuitCommand}" />
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>

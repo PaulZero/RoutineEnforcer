@@ -6,7 +6,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 
-namespace PaulZero.WindowsRoutine.Wpf.Models.View
+namespace PaulZero.WindowsRoutine.Wpf.Models.View.Window
 {
     public class ErrorWindowViewModel
     {
