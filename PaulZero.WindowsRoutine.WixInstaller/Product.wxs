@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="Routine Enforcer" Language="1033" Version="0.2.0.0" Manufacturer="PaulZero" UpgradeCode="3ae70114-f321-41cb-83f0-8a4b565c1b49">
+	<Product Id="*" Name="Routine Enforcer" Language="1033" Version="0.2.1.0" Manufacturer="PaulZero" UpgradeCode="3ae70114-f321-41cb-83f0-8a4b565c1b49">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -26,7 +26,7 @@
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
       <Component Id="PaulZero.WindowsRoutine.Wpf.exe" Guid="27d50ce1-7673-45e8-9b52-93b749c2fea0">
-        <File Source="$(var.PaulZero.WindowsRoutine.Wpf.TargetDir)\publish\PaulZero.WindowsRoutine.Wpf.exe" />
+        <File Source="$(var.PaulZero.WindowsRoutine.Wpf.TargetDir)publish\PaulZero.WindowsRoutine.Wpf.exe" />
       </Component>
       <Component Id="Readme.md" Guid="12fb894a-59db-4786-a7e2-cbaa10b4137c">
         <File Source="$(var.PaulZero.WindowsRoutine.Wpf.ProjectDir)\Readme.md" />
