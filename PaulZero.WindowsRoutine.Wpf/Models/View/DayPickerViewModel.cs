@@ -1,98 +1,161 @@
-﻿namespace PaulZero.WindowsRoutine.Wpf.Models.View
+﻿using PaulZero.WindowsRoutine.Wpf.Models.Commands;
+using PaulZero.WindowsRoutine.Wpf.Models.Validation;
+using System.Windows.Input;
+using System.Windows.Media.Animation;
+
+namespace PaulZero.WindowsRoutine.Wpf.Models.View
 {
     public class DayPickerViewModel : AbstractViewModel
     {
-        public bool IsMondaySelected
+        public DaySelection Selection
         {
-            get => _isMondaySelected; set
+            get => _daySelection;
+            set
             {
-                _isMondaySelected = value;
+                _daySelection = value;
 
                 NotifyPropertyChanged();
+                NotifyPropertyChanged(nameof(IsMondaySelected));
+                NotifyPropertyChanged(nameof(IsTuesdaySelected));
+                NotifyPropertyChanged(nameof(IsWednesdaySelected));
+                NotifyPropertyChanged(nameof(IsThursdaySelected));
+                NotifyPropertyChanged(nameof(IsFridaySelected));
+                NotifyPropertyChanged(nameof(IsSaturdaySelected));
+                NotifyPropertyChanged(nameof(IsSundaySelected));
+            }
+        }
+
+        public bool IsMondaySelected
+        {
+            get => Selection.Monday;
+            set
+            {
+                Selection = Selection.WithMonday(value);
             }
         }
 
         public bool IsTuesdaySelected
         {
-            get => _isTuesdaySelected; set
+            get => Selection.Tuesday;
+            set
             {
-                _isTuesdaySelected = value;
-
-                NotifyPropertyChanged();
+                Selection = Selection.WithTuesday(value);
             }
         }
 
         public bool IsWednesdaySelected
         {
-            get => _isWednesdaySelected; set
+            get => Selection.Wednesday;
+            set
             {
-                _isWednesdaySelected = value;
-
-                NotifyPropertyChanged();
+                Selection = Selection.WithWednesday(value);
             }
         }
 
         public bool IsThursdaySelected
         {
-            get => _isThursdaySelected; set
+            get => Selection.Thursday;
+            set
             {
-                _isThursdaySelected = value;
-
-                NotifyPropertyChanged();
+                Selection = Selection.WithThursday(value);
             }
         }
 
         public bool IsFridaySelected
         {
-            get => _isFridaySelected;
+            get => Selection.Friday;
             set
             {
-                _isFridaySelected = value;
-
-                NotifyPropertyChanged();
+                Selection = Selection.WithFriday(value);
             }
         }
 
         public bool IsSaturdaySelected
         {
-            get => _isSaturdaySelected; set
+            get => Selection.Saturday;
+            set
             {
-                _isSaturdaySelected = value;
-
-                NotifyPropertyChanged();
+                Selection = Selection.WithSaturday(value);
             }
         }
 
         public bool IsSundaySelected
         {
-            get => _isSundaySelected; set
+            get => Selection.Sunday;
+            set
             {
-                _isSundaySelected = value;
-
-                NotifyPropertyChanged();
+                Selection = Selection.WithSunday(value);
             }
         }
 
-        public DaySelection CreateDaySelection()
+        public bool IsAllDaysChecked
         {
-            return new DaySelection
+            get => _isAllDaysChecked;
+            set
             {
-                Monday = IsMondaySelected,
-                Tuesday = IsTuesdaySelected,
-                Wednesday = IsWednesdaySelected,
-                Thursday = IsThursdaySelected,
-                Friday = IsFridaySelected,
-                Saturday = IsSaturdaySelected,
-                Sunday = IsSundaySelected
-            };
+                if (_isAllDaysChecked == value)
+                {
+                    return;
+                }
+
+                _isAllDaysChecked = value;
+
+                _selectAllDaysCommand.Refresh();
+                _selectSpecificDaysCommand.Refresh();
+
+                NotifyPropertyChanged();
+                NotifyPropertyChanged(nameof(IsSpecificDaysChecked));
+            }
         }
 
-        private bool _isMondaySelected;
-        private bool _isTuesdaySelected;
-        private bool _isWednesdaySelected;
-        private bool _isThursdaySelected;
-        private bool _isFridaySelected;
-        private bool _isSaturdaySelected;
-        private bool _isSundaySelected;
+        public bool IsSpecificDaysChecked
+        {
+            get => !IsAllDaysChecked;
+            set
+            {
+                IsAllDaysChecked = !value;
+            }
+        }
+
+        public ICommand SelectAllDaysCommand => _selectAllDaysCommand;
+
+        public ICommand SelectSpecificDaysCommand => _selectSpecificDaysCommand;
+
+        private bool _isAllDaysChecked;
+        private readonly CallbackCommand _selectAllDaysCommand;
+        private readonly CallbackCommand _selectSpecificDaysCommand;
+        private DaySelection _daySelection;
+
+        public DayPickerViewModel()
+        {
+            _selectAllDaysCommand = new CallbackCommand(CanSelectAllDays, DoSelectAllDays);
+            _selectSpecificDaysCommand = new CallbackCommand(CanSelectSpecificDays, DoSelectSpecificDays);
+
+            DoSelectAllDays();
+        }
+
+        private bool CanSelectAllDays(object parameter = default)
+        {
+            return IsSpecificDaysChecked;
+        }
+
+        private void DoSelectAllDays(object parameter = default)
+        {
+            IsAllDaysChecked = true;
+
+            Selection = DaySelection.Daily;
+        }
+
+        private bool CanSelectSpecificDays(object parameter = default)
+        {
+            return IsAllDaysChecked;
+        }
+
+        private void DoSelectSpecificDays(object parameter = default)
+        {
+            IsSpecificDaysChecked = true;
+
+            Selection = DaySelection.Empty;
+        }
     }
 }

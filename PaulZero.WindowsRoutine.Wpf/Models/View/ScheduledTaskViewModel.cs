@@ -40,11 +40,6 @@ namespace PaulZero.WindowsRoutine.Wpf.Models.View
 
         private string CreateDailyFrequencyText()
         {
-            if (DaySelection is null)
-            {
-                return "daily";
-            }
-
             var enabledDays = DaySelection.GetEnabledDays();
 
             if (!enabledDays.Any() || enabledDays.Length == 7)

@@ -7,61 +7,61 @@
         xmlns:controls="clr-namespace:PaulZero.WindowsRoutine.Wpf.Controls"
         xmlns:view="clr-namespace:PaulZero.WindowsRoutine.Wpf.Models.View"
         mc:Ignorable="d"
-        Title="Create Scheduled Task"
+        Title="Schedule new event"
         Width="600"
         SizeToContent="Height"
         WindowStyle="ToolWindow"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Name="CreateScheduledEventWindow">
     <Window.Resources>
-        <ResourceDictionary>
-            <Style TargetType="Label">
-                <Setter Property="Padding" Value="2"/>
-                <Setter Property="Margin" Value="0 4 0 0"/>
-            </Style>
-            <Style TargetType="TextBox">
-                <Setter Property="Padding" Value="4"/>
-                <Setter Property="Margin" Value="0 2 0 2"/>
-            </Style>
-            <Style TargetType="ComboBox">
-                <Setter Property="Padding" Value="4"/>
-                <Setter Property="Margin" Value="0 2 0 2"/>
-            </Style>
-            <Style TargetType="controls:TimePicker">
-                <Setter Property="Margin" Value="0 2 0 2"/>
-            </Style>
-        </ResourceDictionary>
+        <ResourceDictionary Source="../AppStyles.xaml"/>
     </Window.Resources>
     <Window.DataContext>
         <view:CreateScheduledTaskViewModel />
     </Window.DataContext>
-    <StackPanel Margin="16 4 16 4">
-        <Label>Name</Label>
-        <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        
-        <Label>Description</Label>
-        <TextBox MinLines="3" Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        
-        <Label>Warning Time</Label>
-        <controls:TimePicker SelectedTime="{Binding SelectedTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    <StackPanel Style="{StaticResource DialogRoot}">
+        <TextBlock Style="{StaticResource DialogHeader}">Schedule new event</TextBlock>
 
-        <Label>Days Active</Label>
-        <controls:DayPicker DaysSelected="{Binding DaysSelected, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
+        <StackPanel Style="{StaticResource DialogBody}">
+            <TextBlock Style="{StaticResource DialogBodyHeading}">Name</TextBlock>
+            <TextBox Style="{StaticResource ValidatedDialogBodyTextBox}" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
 
-        <Label>Minutes Delay</Label>
-        <ComboBox SelectedItem="{Binding MinutesDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding AvailableMinutesDelay, Mode=OneTime}" />
-        
-        <Label>Action Type</Label>
-        <ComboBox SelectedItem="{Binding ActionType}" ItemsSource="{Binding AvailableActionTypes, Mode=OneTime}" />
+            <TextBlock Style="{StaticResource DialogBodyHeading}">Warning Time</TextBlock>
+            <controls:TimePicker
+                Style="{StaticResource ValidatedDialogBodyTimePicker}"
+                SelectedTime="{
+                    Binding SelectedTime,
+                    Mode=TwoWay,
+                    UpdateSourceTrigger=PropertyChanged,
+                    ValidatesOnDataErrors=True}" />
 
-        <Grid Margin="0 16">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+            <TextBlock Style="{StaticResource DialogBodyHeading}">Days Active</TextBlock>
+            <controls:DayPicker
+                Style="{StaticResource ValidatedDialogBodyDayPicker}"
+                DaysSelected="{
+                    Binding ElementName=CreateScheduledEventWindow,
+                    Path=DataContext.DaysSelected,
+                    Mode=TwoWay,
+                    UpdateSourceTrigger=PropertyChanged,
+                    ValidatesOnDataErrors=True}" />
 
-            <Button Grid.Column="0" Margin="0 0 4 0" Padding="4" Click="Button_Click">OK</Button>
-            <Button Grid.Column="1" Margin="4 0 0 0" Padding="4" IsCancel="True">Cancel</Button>
-        </Grid>
+            <TextBlock Style="{StaticResource DialogBodyHeading}">Minutes Delay</TextBlock>
+            <ComboBox 
+                Style="{StaticResource ValidatedDialogBodyComboBox}"
+                SelectedItem="{Binding MinutesDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                ItemsSource="{Binding AvailableMinutesDelay, Mode=OneTime}" />
+
+            <TextBlock Style="{StaticResource DialogBodyHeading}">Action Type</TextBlock>
+            <ComboBox
+                Style="{StaticResource ValidatedDialogBodyComboBox}"
+                SelectedItem="{Binding ActionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                ItemsSource="{Binding AvailableActionTypes, Mode=OneTime}" />
+        </StackPanel>
+
+        <StackPanel Style="{StaticResource DialogFooter}">
+            <Button Command="{Binding CancelCommand}">Cancel</Button>
+            <Button Command="{Binding ScheduleEventCommand}">OK</Button>
+        </StackPanel>
     </StackPanel>
 </Window>

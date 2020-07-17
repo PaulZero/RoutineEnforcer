@@ -81,7 +81,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Models
 
             var currentDate = WarningDateTime.AddDays(1);
 
-            if (DaysScheduled is null || !DaysScheduled.GetEnabledDays().Any())
+            if (!DaysScheduled.GetEnabledDays().Any())
             {
                 return currentDate;
             }

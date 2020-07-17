@@ -1,14 +1,18 @@
-﻿using System;
+﻿using PaulZero.WindowsRoutine.Wpf.Models.Commands;
+using PaulZero.WindowsRoutine.Wpf.Models.Validation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 
 namespace PaulZero.WindowsRoutine.Wpf.Models.View
 {
-    internal class CreateScheduledTaskViewModel : INotifyPropertyChanged
+    public  class CreateScheduledTaskViewModel : AbstractViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event Action<bool> DialogResultSet;
 
         public string Description
         {
@@ -21,6 +25,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Models.View
             }
         }
 
+        [Required]
         public string Name
         {
             get => _name;
@@ -32,6 +37,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Models.View
             }
         }
 
+        [Required]
         public TimeSpan SelectedTime
         {
             get => _selectedTime;
@@ -43,6 +49,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Models.View
             }
         }
 
+        [Required]
         public int MinutesDelay
         {
             get => _minutesDelay;
@@ -54,6 +61,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Models.View
             }
         }
 
+        [Required]
         public EventActionType ActionType
         {
             get => _actionType;
@@ -65,6 +73,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Models.View
             }
         }
 
+        [DaySelectionRequired]
         public DaySelection DaysSelected
         {
             get => _daysSelected;
@@ -84,6 +93,10 @@ namespace PaulZero.WindowsRoutine.Wpf.Models.View
             EventActionType.SleepComputer
         };
 
+        public ICommand CancelCommand => _cancelCommand;
+
+        public ICommand ScheduleEventCommand => _scheduleEventCommand;
+
         private DaySelection _daysSelected;
         private string _description;
         private string _name;
@@ -91,15 +104,37 @@ namespace PaulZero.WindowsRoutine.Wpf.Models.View
         private int _minutesDelay = 15;
         private EventActionType _actionType = EventActionType.LockScreen;
 
+        private readonly CallbackCommand _cancelCommand;
+        private readonly CallbackCommand _scheduleEventCommand;
+
         public CreateScheduledTaskViewModel()
         {
-            DaysSelected = new DaySelection();
+            _cancelCommand = new CallbackCommand(Cancel);
+            _scheduleEventCommand = new CallbackCommand(CanScheduleEvent, ScheduleEvent);
+
             SelectedTime = DateTime.Now.TimeOfDay;
         }
 
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
+        protected override void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            base.NotifyPropertyChanged(propertyName);
+
+            _scheduleEventCommand.Refresh();
+        }
+
+        private void Cancel(object parameter = default)
+        {
+            DialogResultSet.Invoke(false);
+        }
+
+        private bool CanScheduleEvent(object parameter = default)
+        {
+            return Error == string.Empty;
+        }
+
+        private void ScheduleEvent(object parameter = default)
+        {
+            DialogResultSet.Invoke(true);
         }
     }
 }

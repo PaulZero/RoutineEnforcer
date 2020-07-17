@@ -8,16 +8,39 @@
              mc:Ignorable="d" 
              d:DesignWidth="500"
              Name="DayPickerControl">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../AppStyles.xaml"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <vm:DayPickerViewModel />
+    </UserControl.DataContext>
+    
     <StackPanel>
-        <RadioButton Margin="0 0 0 4" IsChecked="{Binding ElementName=DayPickerControl, Path=IsEveryDay, Mode=TwoWay}">Daily</RadioButton>
-        <RadioButton Margin="0 0 0 4" IsChecked="{Binding ElementName=DayPickerControl, Path=IsSelectedDays, Mode=TwoWay}">Specific Days</RadioButton>
+        <RadioButton
+            IsChecked="{Binding IsAllDaysChecked, Mode=OneWay}"
+            Command="{Binding SelectAllDaysCommand}"
+            Content="Daily">
+            <RadioButton.Margin>
+                <Thickness Left="0" Top="0" Bottom="{StaticResource MarginValueSmall}" Right="0" />
+            </RadioButton.Margin>
+        </RadioButton>
+
+        <RadioButton
+            IsChecked="{Binding IsSpecificDaysChecked, Mode=OneWay}"
+            Command="{Binding SelectSpecificDaysCommand}"
+            Content="Specific Days">
+            <RadioButton.Margin>
+                <Thickness Left="0" Top="0" Bottom="{StaticResource MarginValueSmall}" Right="0" />
+            </RadioButton.Margin>
+        </RadioButton>
+        
         <Grid>
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="IsEnabled" Value="False" />
 
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=DayPickerControl, Path=IsSelectedDays}" Value="True">
+                        <DataTrigger Binding="{Binding IsSpecificDaysChecked}" Value="True">
                             <Setter Property="IsEnabled" Value="True"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -33,13 +56,20 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <ToggleButton Grid.Column="0" IsChecked="{Binding ElementName=DayPickerControl, Path=IsMondaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Mon</ToggleButton>
-            <ToggleButton Grid.Column="1" IsChecked="{Binding ElementName=DayPickerControl, Path=IsTuesdaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Tue</ToggleButton>
-            <ToggleButton Grid.Column="2" IsChecked="{Binding ElementName=DayPickerControl, Path=IsWednesdaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Wed</ToggleButton>
-            <ToggleButton Grid.Column="3" IsChecked="{Binding ElementName=DayPickerControl, Path=IsThursdaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Thu</ToggleButton>
-            <ToggleButton Grid.Column="4" IsChecked="{Binding ElementName=DayPickerControl, Path=IsFridaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Fri</ToggleButton>
-            <ToggleButton Grid.Column="5" IsChecked="{Binding ElementName=DayPickerControl, Path=IsSaturdaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Sat</ToggleButton>
-            <ToggleButton Grid.Column="6" IsChecked="{Binding ElementName=DayPickerControl, Path=IsSundaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Sun</ToggleButton>
+            <ToggleButton Grid.Column="0" Padding="{StaticResource MarginSmall}"
+                          IsChecked="{Binding IsMondaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Mon</ToggleButton>
+            <ToggleButton Grid.Column="1" Padding="{StaticResource MarginSmall}"
+                          IsChecked="{Binding IsTuesdaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Tue</ToggleButton>
+            <ToggleButton Grid.Column="2" Padding="{StaticResource MarginSmall}"
+                          IsChecked="{Binding IsWednesdaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Wed</ToggleButton>
+            <ToggleButton Grid.Column="3" Padding="{StaticResource MarginSmall}"
+                          IsChecked="{Binding IsThursdaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Thu</ToggleButton>
+            <ToggleButton Grid.Column="4" Padding="{StaticResource MarginSmall}"
+                          IsChecked="{Binding IsFridaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Fri</ToggleButton>
+            <ToggleButton Grid.Column="5" Padding="{StaticResource MarginSmall}"
+                          IsChecked="{Binding IsSaturdaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Sat</ToggleButton>
+            <ToggleButton Grid.Column="6" Padding="{StaticResource MarginSmall}"
+                          IsChecked="{Binding IsSundaySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Sun</ToggleButton>
         </Grid>
     </StackPanel>
 </UserControl>

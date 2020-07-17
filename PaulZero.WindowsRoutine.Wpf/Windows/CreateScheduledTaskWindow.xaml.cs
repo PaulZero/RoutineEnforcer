@@ -10,29 +10,35 @@ namespace PaulZero.WindowsRoutine.Wpf.Windows
     /// </summary>
     public partial class CreateScheduledTaskWindow : Window
     {
+        public CreateScheduledTaskViewModel ViewModel
+        {
+            get => DataContext as CreateScheduledTaskViewModel;
+            set => DataContext = value;
+        }
+
         public CreateScheduledTaskWindow()
         {
             InitializeComponent();
+
+            ViewModel.DialogResultSet += ViewModel_DialogResultSet;
+        }
+
+        private void ViewModel_DialogResultSet(bool dialogResult)
+        {
+            DialogResult = dialogResult;
         }
 
         public ScheduledEvent CreateScheduledEvent()
         {
-            var context = DataContext as CreateScheduledTaskViewModel;
-
             return new ScheduledEvent
             {
-                Name = context.Name,
-                Description = context.Description,
-                WarningTime = context.SelectedTime,
-                ActionDelay = TimeSpan.FromMinutes(context.MinutesDelay),
-                ActionType = context.ActionType,
-                DaysScheduled = context.DaysSelected
+                Name = ViewModel.Name,
+                Description = ViewModel.Description,
+                WarningTime = ViewModel.SelectedTime,
+                ActionDelay = TimeSpan.FromMinutes(ViewModel.MinutesDelay),
+                ActionType = ViewModel.ActionType,
+                DaysScheduled = ViewModel.DaysSelected
             };
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
         }
     }
 }

@@ -3,8 +3,32 @@ using System.Collections.Generic;
 
 namespace PaulZero.WindowsRoutine.Wpf.Models
 {
-    public class DaySelection
+    public struct DaySelection
     {
+        public static DaySelection Daily =>
+            new DaySelection
+            {
+                Monday = true,
+                Tuesday = true,
+                Wednesday = true,
+                Thursday = true,
+                Friday = true,
+                Saturday = true,
+                Sunday = true
+            };
+
+        public static DaySelection Empty =>
+            new DaySelection
+            {
+                Monday = false,
+                Tuesday = false,
+                Wednesday = false,
+                Thursday = false,
+                Friday = false,
+                Saturday = false,
+                Sunday = false
+            };
+
         public bool Monday { get; set; }
 
         public bool Tuesday { get; set; }
@@ -41,6 +65,54 @@ namespace PaulZero.WindowsRoutine.Wpf.Models
                 default:
                     return false;
             }
+        }
+
+        public DaySelection WithMonday(bool value)
+        {
+            Monday = value;
+
+            return this;
+        }
+
+        public DaySelection WithTuesday(bool value)
+        {
+            Tuesday = value;
+
+            return this;
+        }
+
+        public DaySelection WithWednesday(bool value)
+        {
+            Wednesday = value;
+
+            return this;
+        }
+
+        public DaySelection WithThursday(bool value)
+        {
+            Thursday = value;
+
+            return this;
+        }
+
+        public DaySelection WithFriday(bool value)
+        {
+            Friday = value;
+
+            return this;
+        }
+        public DaySelection WithSaturday(bool value)
+        {
+            Saturday = value;
+
+            return this;
+        }
+
+        public DaySelection WithSunday(bool value)
+        {
+            Sunday = value;
+
+            return this;
         }
 
         public string[] GetEnabledDays()

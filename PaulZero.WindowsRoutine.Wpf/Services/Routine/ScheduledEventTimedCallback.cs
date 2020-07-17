@@ -23,11 +23,6 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Routine
                 return false;
             }
 
-            if (ScheduledEvent.DaysScheduled is null)
-            {
-                return true;
-            }
-
             return ScheduledEvent.DaysScheduled.IsValidFor(currentDateTime.DayOfWeek);
         }
     }
