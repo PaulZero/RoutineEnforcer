@@ -1,7 +1,5 @@
 ﻿using PaulZero.WindowsRoutine.Wpf.Models.Commands;
-using PaulZero.WindowsRoutine.Wpf.Models.Validation;
 using System.Windows.Input;
-using System.Windows.Media.Animation;
 
 namespace PaulZero.WindowsRoutine.Wpf.Models.View
 {

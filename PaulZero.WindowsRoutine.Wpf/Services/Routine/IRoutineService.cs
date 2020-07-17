@@ -7,7 +7,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Routine
     {
         TimeSpan GetNextWarningCountdown();
 
-        ScheduledTaskViewModel[] GetTaskOverview();
+        ScheduledEventViewModel[] GetTaskOverview();
 
         void Start();
     }

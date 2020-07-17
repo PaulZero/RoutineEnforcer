@@ -2,7 +2,6 @@
 using PaulZero.WindowsRoutine.Wpf.Models.Validation;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -10,7 +9,7 @@ using System.Windows.Input;
 
 namespace PaulZero.WindowsRoutine.Wpf.Models.View
 {
-    public  class CreateScheduledTaskViewModel : AbstractViewModel
+    public class CreateScheduledTaskViewModel : AbstractViewModel
     {
         public event Action<bool> DialogResultSet;
 

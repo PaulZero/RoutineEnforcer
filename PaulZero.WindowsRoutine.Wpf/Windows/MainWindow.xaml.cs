@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using PaulZero.WindowsRoutine.Wpf.Services.Config;
 using PaulZero.WindowsRoutine.Wpf.Services.Notifications;
-using PaulZero.WindowsRoutine.Wpf.Services.Routine;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;

@@ -41,7 +41,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Controls
         public DaySelection DaysSelected
         {
             get { return (DaySelection)GetValue(DaysSelectedProperty); }
-            set 
+            set
             {
                 SetValue(DaysSelectedProperty, value);
             }

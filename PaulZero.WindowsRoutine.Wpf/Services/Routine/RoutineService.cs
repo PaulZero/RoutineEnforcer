@@ -40,10 +40,10 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Routine
             return _configService.GetAppConfiguration().ScheduledEvents.Min(s => s.WarningDateTime) - DateTime.Now;
         }
 
-        public ScheduledTaskViewModel[] GetTaskOverview()
+        public ScheduledEventViewModel[] GetTaskOverview()
         {
             return _timedScheduledEvents
-                .Select(s => new ScheduledTaskViewModel(s.ScheduledEvent))
+                .Select(s => new ScheduledEventViewModel(s.ScheduledEvent))
                 .OrderBy(s => s.NextDueDate)
                 .ToArray();
         }

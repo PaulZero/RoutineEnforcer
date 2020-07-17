@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using PaulZero.WindowsRoutine.Wpf.Windows;
 using System;
 
 namespace PaulZero.WindowsRoutine.Wpf.Services.Notifications

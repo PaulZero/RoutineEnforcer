@@ -16,8 +16,8 @@ namespace PaulZero.WindowsRoutine.Wpf.Controls
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<ScheduledTaskViewModel> ScheduledTasks { get; }
-            = new ObservableCollection<ScheduledTaskViewModel>();
+        public ObservableCollection<ScheduledEventViewModel> ScheduledTasks { get; }
+            = new ObservableCollection<ScheduledEventViewModel>();
 
         public bool HasScheduledTasks => ScheduledTasks.Any();
 

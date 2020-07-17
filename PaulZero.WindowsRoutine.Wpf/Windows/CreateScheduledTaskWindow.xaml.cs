@@ -33,7 +33,6 @@ namespace PaulZero.WindowsRoutine.Wpf.Windows
             return new ScheduledEvent
             {
                 Name = ViewModel.Name,
-                Description = ViewModel.Description,
                 WarningTime = ViewModel.SelectedTime,
                 ActionDelay = TimeSpan.FromMinutes(ViewModel.MinutesDelay),
                 ActionType = ViewModel.ActionType,

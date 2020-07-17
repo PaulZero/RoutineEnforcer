@@ -13,7 +13,6 @@ using PaulZero.WindowsRoutine.Wpf.Services.Notifications;
 using PaulZero.WindowsRoutine.Wpf.Services.Routine;
 using PaulZero.WindowsRoutine.Wpf.Windows;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -28,7 +27,7 @@ namespace PaulZero.WindowsRoutine.Wpf
         public static ServiceProvider AppServices { get; private set; }
 
         public App()
-        {            
+        {
         }
 
         private void EnsureProgramDataDirectoryExists()

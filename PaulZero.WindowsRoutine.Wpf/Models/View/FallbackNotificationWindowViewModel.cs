@@ -43,7 +43,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Models.View
 
         public FallbackNotificationWindowViewModel()
             : this("Screen lock incoming, lol", "You need to eat some cake", "Time until screen is locked...", "Lock screen already", TimeSpan.FromMinutes(1))
-        {   
+        {
         }
 
         public FallbackNotificationWindowViewModel(string title, string message, string progressStatusText, string skipButtonText, TimeSpan delay)

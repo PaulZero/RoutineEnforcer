@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace PaulZero.WindowsRoutine.Wpf.Models.Commands
 {
-    class CallbackCommand : ICommand
+    internal class CallbackCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;
 

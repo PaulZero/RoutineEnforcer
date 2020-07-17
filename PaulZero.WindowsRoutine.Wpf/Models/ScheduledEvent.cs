@@ -10,8 +10,6 @@ namespace PaulZero.WindowsRoutine.Wpf.Models
 
         public string Name { get; set; }
 
-        public string Description { get; set; }
-
         /// <summary>
         /// 24 hour time representation of the time the first warning will be displayed.
         /// </summary>

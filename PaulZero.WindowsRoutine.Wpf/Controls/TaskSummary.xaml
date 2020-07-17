@@ -21,7 +21,7 @@
                 </Style>
             </ItemsControl.Style>
             <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type vm:ScheduledTaskViewModel}">
+                <DataTemplate DataType="{x:Type vm:ScheduledEventViewModel}">
                     <Border Background="SteelBlue" CornerRadius="4" Margin="4">
                         <StackPanel>
                             <Border CornerRadius="4 4 0 0">
