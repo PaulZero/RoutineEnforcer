@@ -78,10 +78,6 @@ namespace PaulZero.WindowsRoutine.Wpf.Windows
                 return;
             }
 
-            var routineService = App.AppServices.GetService<IRoutineService>();
-
-            routineService.Start();
-
             Visibility = Visibility.Collapsed;
         }
 

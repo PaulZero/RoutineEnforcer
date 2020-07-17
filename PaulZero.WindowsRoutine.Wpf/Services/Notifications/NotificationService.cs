@@ -27,6 +27,18 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Notifications
         {
             _logger = logger;
             _toastNotifier = DesktopNotificationManagerCompat.CreateToastNotifier();
+
+            try
+            {
+                if (!CanShowNotifications)
+                {
+                    throw new Exception(StatusMessage);
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new Exception($"Failed to create notification service: {exception.Message}");
+            }
         }
 
         //public void ShowNotification(string id, string title, string message, params (string buttonLabel, string buttonArguments)[] buttons)

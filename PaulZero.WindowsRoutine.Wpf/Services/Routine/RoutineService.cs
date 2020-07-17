@@ -41,10 +41,12 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Routine
         }
 
         public ScheduledTaskViewModel[] GetTaskOverview()
-            => _timedScheduledEvents
+        {
+            return _timedScheduledEvents
                 .Select(s => new ScheduledTaskViewModel(s.ScheduledEvent))
                 .OrderBy(s => s.NextDueDate)
                 .ToArray();
+        }
 
         public void Start()
         {
@@ -82,6 +84,8 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Routine
             catch (Exception exception)
             {
                 _logger.LogError(exception, $"Failed to add scheduled event '{scheduledEvent?.Name}' to the clock service.");
+
+                throw;
             }
         }
 

@@ -1,0 +1,234 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:PaulZero.WindowsRoutine.Wpf">
+    
+    <!-- Margin values -->
+    
+    <sys:Double x:Key="MarginValueSmall">4</sys:Double>
+    <sys:Double x:Key="MarginValueMedium">8</sys:Double>
+    <sys:Double x:Key="MarginValueLarge">12</sys:Double>
+    <sys:Double x:Key="MarginValueExtraLarge">16</sys:Double>
+
+    <Thickness x:Key="MarginSmall"
+               Left="{StaticResource MarginValueSmall}"
+               Top="{StaticResource MarginValueSmall}"
+               Right="{StaticResource MarginValueSmall}"
+               Bottom="{StaticResource MarginValueSmall}"/>
+
+    <Thickness x:Key="MarginMedium"
+               Left="{StaticResource MarginValueMedium}"
+               Top="{StaticResource MarginValueMedium}"
+               Right="{StaticResource MarginValueMedium}"
+               Bottom="{StaticResource MarginValueMedium}"/>
+    
+    <Thickness x:Key="MarginLarge"
+               Left="{StaticResource MarginValueLarge}"
+               Top="{StaticResource MarginValueLarge}"
+               Right="{StaticResource MarginValueLarge}"
+               Bottom="{StaticResource MarginValueLarge}"/>
+    
+    <Thickness x:Key="MarginExtraLarge"
+               Left="{StaticResource MarginValueExtraLarge}"
+               Top="{StaticResource MarginValueExtraLarge}"
+               Right="{StaticResource MarginValueExtraLarge}"
+               Bottom="{StaticResource MarginValueExtraLarge}"/>
+    
+    <!-- Font Sizes -->
+    
+    <sys:Double x:Key="FontSizeSmall">12</sys:Double>
+    <sys:Double x:Key="FontSizeMedium">14</sys:Double>
+    <sys:Double x:Key="FontSizeLarge">16</sys:Double>
+    <sys:Double x:Key="FontSizeExtraLarge">18</sys:Double>
+    
+    <!-- Colour scheme -->
+
+    <SolidColorBrush x:Key="BodyBackground" Color="White" />
+    <SolidColorBrush x:Key="BodyForeground" Color="Black" />
+
+    <SolidColorBrush x:Key="PreformattedBackground" Color="GhostWhite" />
+    <SolidColorBrush x:Key="PreformattedForeground" Color="Black" />
+
+    <SolidColorBrush x:Key="PrimaryBackground" Color="LightSteelBlue" />
+    <SolidColorBrush x:Key="PrimaryForeground" Color="Black" />
+
+    <SolidColorBrush x:Key="WarningBackground" Color="Gold" />
+    <SolidColorBrush x:Key="WarningForeground" Color="Black" />
+
+    <SolidColorBrush x:Key="ErrorBackground" Color="DarkRed" />
+    <SolidColorBrush x:Key="ErrorForeground" Color="White" />
+
+    <SolidColorBrush x:Key="SubtleErrorBackground" Color="LightPink" />
+    <SolidColorBrush x:Key="SubtleErrorForeground" Color="Black" />
+
+    <!-- Element defaults -->
+
+    <Style TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource BodyForeground}" />
+    </Style>
+
+    <Style TargetType="Button">
+        <Setter Property="MinWidth" Value="120" />
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="Padding" Value="16 4" />
+    </Style>
+    
+    
+
+    
+
+    <Style TargetType="TextBlock" x:Key="QuotedString" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="FontStyle" Value="Italic" />
+        <Setter Property="Margin" Value="12 2 8 4" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="WarningQuote" BasedOn="{StaticResource QuotedString}">
+        <Setter Property="Foreground" Value="DarkRed" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="SubHeading" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Background" Value="LightSteelBlue" />
+        <Setter Property="Padding" Value="8 4" />
+        <Setter Property="Margin" Value="0" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="WindowHeading" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="8 4 8 8" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Background" Value="SteelBlue" />
+    </Style>
+    
+    <!-- Dialog styles -->
+    
+    <Style TargetType="StackPanel" x:Key="DialogRoot">
+        <Setter Property="Background" Value="{StaticResource BodyBackground}" />
+    </Style>
+
+    <!-- Dialog header styles -->
+
+    <Style TargetType="TextBlock" x:Key="DialogHeader">
+        <Setter Property="Background" Value="{StaticResource PrimaryBackground}" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryForeground}" />
+        <Setter Property="Padding" Value="{StaticResource MarginMedium}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
+        <Setter Property="Margin" Value="0" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="DialogErrorHeader" BasedOn="{StaticResource DialogHeader}">
+        <Setter Property="Background" Value="{StaticResource ErrorBackground}" />
+        <Setter Property="Foreground" Value="{StaticResource ErrorForeground}" />
+    </Style>
+    
+    <!-- Dialog subheader styles -->
+
+    <Style TargetType="TextBlock" x:Key="DialogSubHeader" BasedOn="{StaticResource DialogHeader}">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeMedium}" />
+        <Setter Property="Background" Value="LightGray" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="FontWeight" Value="DemiBold" />
+        <Setter Property="Padding">
+            <Setter.Value>
+                <Thickness
+                    Left="{StaticResource MarginValueMedium}"
+                    Top="{StaticResource MarginValueSmall}" 
+                    Right="{StaticResource MarginValueMedium}"
+                    Bottom="{StaticResource MarginValueSmall}" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="DialogPrimarySubHeader" BasedOn="{StaticResource DialogSubHeader}">
+        <Setter Property="Background" Value="{StaticResource PrimaryBackground}" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryForeground}" />
+    </Style>
+    
+    <Style TargetType="TextBlock" x:Key="DialogWarningSubHeader" BasedOn="{StaticResource DialogSubHeader}">
+        <Setter Property="Background" Value="{StaticResource WarningBackground}" />
+        <Setter Property="Foreground" Value="{StaticResource WarningForeground}" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="DialogErrorSubHeader" BasedOn="{StaticResource DialogSubHeader}">
+        <Setter Property="Background" Value="{StaticResource SubtleErrorBackground}" />
+        <Setter Property="Foreground" Value="{StaticResource SubtleErrorForeground}" />
+    </Style>
+
+    <!-- Dialog body and control overrides -->
+
+    <Style TargetType="TextBlock" x:Key="DialogBodyTextBlock">
+        <Setter Property="Margin" Value="{StaticResource MarginSmall}" />
+        <Setter Property="Foreground" Value="{StaticResource BodyForeground}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <Style TargetType="ProgressBar" x:Key="DialogBodyProgressBar">
+        <Setter Property="Height" Value="{StaticResource FontSizeLarge}" />
+        <Setter Property="Margin" Value="{StaticResource MarginSmall}" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="DialogBodyHeading">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeMedium}" />
+        <Setter Property="FontWeight" Value="DemiBold" />
+        <Setter Property="Margin">
+            <Setter.Value>
+                <Thickness 
+                    Left="{StaticResource MarginValueSmall}"
+                    Top="{StaticResource MarginValueSmall}" 
+                    Right="{StaticResource MarginValueSmall}"
+                    Bottom="0" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="DialogBodyQuotedText" BasedOn="{StaticResource DialogBodyTextBlock}">
+        <Setter Property="FontFamily" Value="Lucida Console" />
+        <Setter Property="Background" Value="{StaticResource PreformattedBackground}" />
+        <Setter Property="Foreground" Value="{StaticResource PreformattedForeground}" />
+        <Setter Property="Padding" Value="{StaticResource MarginMedium}" />
+    </Style>
+
+    <Style TargetType="StackPanel" x:Key="DialogBody">
+        <Setter Property="Margin" Value="{StaticResource MarginSmall}" />
+        <Style.Resources>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource DialogBodyTextBlock}" />
+            <Style TargetType="ProgressBar" BasedOn="{StaticResource DialogBodyProgressBar}" />
+        </Style.Resources>
+    </Style>
+
+    <Style TargetType="ScrollViewer" x:Key="DialogBodyPreformatted">
+        <Setter Property="Margin" Value="{StaticResource MarginSmall}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="MaxHeight" Value="300" />
+
+        <Style.Resources>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource DialogBodyQuotedText}">
+                <Setter Property="LineHeight" Value="{StaticResource FontSizeLarge}"/>
+                <Setter Property="TextWrapping" Value="NoWrap" />
+                <Setter Property="Margin" Value="0" />
+            </Style>
+        </Style.Resources>
+    </Style>
+    
+    <!-- Dialog footer and control overrides -->
+    
+    <Style TargetType="Button" x:Key="DialogFooterButton" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Margin" Value="{StaticResource MarginMedium}" />
+    </Style>
+    
+    <Style TargetType="StackPanel" x:Key="DialogFooter">
+        <Setter Property="Background" Value="{StaticResource PrimaryBackground}" />
+        <Setter Property="Orientation" Value="Horizontal" />
+        <Setter Property="FlowDirection" Value="RightToLeft" />
+
+        <Style.Resources>
+            <Style TargetType="Button" BasedOn="{StaticResource DialogFooterButton}" />
+        </Style.Resources>
+    </Style>
+    
+    <Style TargetType="StackPanel" x:Key="DialogErrorFooter" BasedOn="{StaticResource DialogFooter}">
+        <Setter Property="Background" Value="{StaticResource ErrorBackground}"/>
+    </Style>
+</ResourceDictionary>

@@ -11,8 +11,11 @@ using PaulZero.WindowsRoutine.Wpf.Services.Clock.Interfaces;
 using PaulZero.WindowsRoutine.Wpf.Services.Config;
 using PaulZero.WindowsRoutine.Wpf.Services.Notifications;
 using PaulZero.WindowsRoutine.Wpf.Services.Routine;
+using PaulZero.WindowsRoutine.Wpf.Windows;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.Text;
 using System.Windows;
 
 namespace PaulZero.WindowsRoutine.Wpf
@@ -25,9 +28,18 @@ namespace PaulZero.WindowsRoutine.Wpf
         public static ServiceProvider AppServices { get; private set; }
 
         public App()
+        {            
+        }
+
+        private void EnsureProgramDataDirectoryExists()
         {
-            ConfigureToastNotifications();
-            ConfigureServices();
+            var programData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            var appDataDirectory = Path.Combine(programData, "PaulZero", "WindowsRoutine");
+
+            if (!Directory.Exists(appDataDirectory))
+            {
+                Directory.CreateDirectory(appDataDirectory);
+            }
         }
 
         private void ConfigureToastNotifications()
@@ -73,7 +85,7 @@ namespace PaulZero.WindowsRoutine.Wpf
                 o.AddNLog(LogManager.Configuration);
             });
 
-            services.AddSingleton<INotificationService, NotificationService>();
+            services.AddSingleton(s => NotificationServiceFactory.Create(s.GetService<ILogger<INotificationService>>()));
             services.AddSingleton<IConfigService, ConfigService>();
             services.AddSingleton<IActionService, ActionService>();
             services.AddSingleton<IClockService, ClockService>();
@@ -85,6 +97,68 @@ namespace PaulZero.WindowsRoutine.Wpf
         private void App_Exit(object sender, ExitEventArgs e)
         {
             AppServices.Dispose();
+        }
+
+        private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            var hasBeenAddedToLog = false;
+
+            try
+            {
+                var logger = AppServices?.GetService<ILogger<App>>();
+
+                if (logger != null)
+                {
+                    logger.LogError(e.Exception, $"An unhandled exception occurred: {e.Exception.Message}{Environment.NewLine}{e.Exception.StackTrace}");
+
+                    hasBeenAddedToLog = true;
+                }
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                var errorWindow = new ErrorWindow("An unhandled exception occurred", default, e.Exception);
+
+                errorWindow.ShowDialog();
+            }
+            catch
+            {
+                var errorBuilder = new StringBuilder();
+
+                errorBuilder
+                    .AppendLine("An unhandled exception has occurred, please note this down and pass it on to the developer:")
+                    .AppendLine();
+
+                if (hasBeenAddedToLog)
+                {
+                    errorBuilder.AppendLine("This should also have been appended to the application log.")
+                        .AppendLine();
+                }
+
+                errorBuilder
+                    .AppendLine(e.Exception.Message)
+                    .AppendLine()
+                    .AppendLine(e.Exception.StackTrace);
+
+                MessageBox.Show(errorBuilder.ToString(), "Unhandled Exception", MessageBoxButton.OK,
+                    MessageBoxImage.Warning, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
+            }
+
+            e.Handled = true;
+        }
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            ConfigureToastNotifications();
+            ConfigureServices();
+            EnsureProgramDataDirectoryExists();
+
+            var routineService = AppServices.GetService<IRoutineService>();
+
+            routineService.Start();
         }
     }
 }
