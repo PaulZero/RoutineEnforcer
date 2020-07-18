@@ -15,6 +15,9 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Notifications
 
         public string StatusMessage => CreateStatusMessage();
 
+        /// <summary>
+        /// JON: It seems to be this call, from what I saw of a stack trace someone sent.
+        /// </summary>
         public bool CanShowNotifications => _toastNotifier.Setting == NotificationSetting.Enabled;
 
         private readonly ToastNotifier _toastNotifier;
@@ -37,6 +40,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Notifications
             }
             catch (Exception exception)
             {
+                // JON: Break here to catch it failing
                 throw new Exception($"Failed to create notification service: {exception.Message}");
             }
         }
