@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace PaulZero.RoutineEnforcer.Models.Commands
+namespace PaulZero.RoutineEnforcer.Views.Commands
 {
     internal class CallbackCommand : ICommand
     {

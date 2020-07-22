@@ -1,5 +1,5 @@
 ﻿using PaulZero.RoutineEnforcer.Models;
-using PaulZero.RoutineEnforcer.Models.Commands;
+using PaulZero.RoutineEnforcer.Views.Commands;
 using System.Windows.Input;
 
 namespace PaulZero.RoutineEnforcer.Views.Models.Controls

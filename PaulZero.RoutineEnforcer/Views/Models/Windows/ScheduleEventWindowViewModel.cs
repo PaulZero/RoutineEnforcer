@@ -1,6 +1,6 @@
 ﻿using PaulZero.RoutineEnforcer.Models;
-using PaulZero.RoutineEnforcer.Models.Commands;
 using PaulZero.RoutineEnforcer.Models.Validation;
+using PaulZero.RoutineEnforcer.Views.Commands;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

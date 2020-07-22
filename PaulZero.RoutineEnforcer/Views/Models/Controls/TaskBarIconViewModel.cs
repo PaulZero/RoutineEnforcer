@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using PaulZero.RoutineEnforcer.Models.Commands;
 using PaulZero.RoutineEnforcer.Services.Config.Interfaces;
+using PaulZero.RoutineEnforcer.Views.Commands;
 using PaulZero.RoutineEnforcer.Views.Windows;
 using System;
 using System.Diagnostics;
