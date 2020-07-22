@@ -1,4 +1,4 @@
-﻿namespace PaulZero.WindowsRoutine.Wpf.Services.Clock
+﻿namespace PaulZero.RoutineEnforcer.Services.Clock
 {
     public enum TimedCallbackExecutionState
     {

@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Uwp.Notifications;
+using PaulZero.RoutineEnforcer.Services.Notifications.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.UI.Notifications;
 
-namespace PaulZero.WindowsRoutine.Wpf.Services.Notifications
+namespace PaulZero.RoutineEnforcer.Services.Notifications
 {
     internal class NotificationService : INotificationService
     {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace PaulZero.WindowsRoutine.Wpf.Models.Validation
+namespace PaulZero.RoutineEnforcer.Models.Validation
 {
     public class DaySelectionRequiredAttribute : ValidationAttribute
     {

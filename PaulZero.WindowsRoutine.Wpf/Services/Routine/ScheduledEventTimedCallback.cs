@@ -1,8 +1,8 @@
-﻿using PaulZero.WindowsRoutine.Wpf.Models;
-using PaulZero.WindowsRoutine.Wpf.Services.Clock;
+﻿using PaulZero.RoutineEnforcer.Models;
+using PaulZero.RoutineEnforcer.Services.Clock;
 using System;
 
-namespace PaulZero.WindowsRoutine.Wpf.Services.Routine
+namespace PaulZero.RoutineEnforcer.Services.Routine
 {
     internal class ScheduledEventTimedCallback : TimedCallback
     {

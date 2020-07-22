@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace PaulZero.WindowsRoutine.Wpf.Services.Clock.Interfaces
+namespace PaulZero.RoutineEnforcer.Services.Clock.Interfaces
 {
     public interface IClockServiceCancellationProvider : IDisposable
     {

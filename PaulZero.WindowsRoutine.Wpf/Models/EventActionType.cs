@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace PaulZero.WindowsRoutine.Wpf.Models
+namespace PaulZero.RoutineEnforcer.Models
 {
     public enum EventActionType
     {

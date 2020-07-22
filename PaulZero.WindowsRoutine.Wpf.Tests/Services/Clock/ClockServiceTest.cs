@@ -1,16 +1,14 @@
 ﻿using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PaulZero.WindowsRoutine.Wpf.Services;
-using PaulZero.WindowsRoutine.Wpf.Services.Clock;
-using PaulZero.WindowsRoutine.Wpf.Services.Clock.Interfaces;
+using PaulZero.RoutineEnforcer.Wpf.Services.Clock;
+using PaulZero.RoutineEnforcer.Wpf.Services.Clock.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PaulZero.WindowsRoutine.Wpf.Tests.Services.Clock
+namespace PaulZero.RoutineEnforcer.Tests.Services.Clock
 {
     [TestClass]
     public class ClockServiceTest

@@ -1,7 +1,7 @@
-﻿using PaulZero.WindowsRoutine.Wpf.Services.Clock.Interfaces;
+﻿using PaulZero.RoutineEnforcer.Services.Clock.Interfaces;
 using System.Threading;
 
-namespace PaulZero.WindowsRoutine.Wpf.Services.Clock
+namespace PaulZero.RoutineEnforcer.Services.Clock
 {
     internal class ClockServiceCancellationProvider : IClockServiceCancellationProvider
     {

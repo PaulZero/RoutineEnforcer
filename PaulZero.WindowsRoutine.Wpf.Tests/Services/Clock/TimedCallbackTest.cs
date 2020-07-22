@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PaulZero.WindowsRoutine.Wpf.Services.Clock;
+using PaulZero.RoutineEnforcer.Wpf.Services.Clock;
 using System;
 
-namespace PaulZero.WindowsRoutine.Wpf.Tests.Services.Clock
+namespace PaulZero.RoutineEnforcer.Tests.Services.Clock
 {
     [TestClass]
     public class TimedCallbackTest

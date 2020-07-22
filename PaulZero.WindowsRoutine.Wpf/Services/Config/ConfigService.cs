@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
-using PaulZero.WindowsRoutine.Wpf.Models;
+using PaulZero.RoutineEnforcer.Models;
+using PaulZero.RoutineEnforcer.Services.Config.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
 
-namespace PaulZero.WindowsRoutine.Wpf.Services.Config
+namespace PaulZero.RoutineEnforcer.Services.Config
 {
     internal class ConfigService : IConfigService
     {
@@ -67,6 +68,26 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Config
         {
             try
             {
+#if DEBUG
+                _logger.LogInformation("Creating debug configuration.");
+
+                return new AppConfiguration
+                {
+                    ScheduledEvents = new List<ScheduledEvent>
+                    {
+                        new ScheduledEvent
+                        {
+                            WarningTimeHour = DateTime.Now.Hour,
+                            WarningTimeMinute = DateTime.Now.Minute,
+                            ActionDelayMinutes = 60,
+                            ActionType = EventActionType.LockScreen,
+                            DaysScheduled = DaySelection.Daily,
+                            Id = Guid.NewGuid().ToString(),
+                            Name = "Do some debugging!"
+                        }
+                    }
+                };
+#else
                 var filePath = GetConfigFilePath();
 
                 _logger.LogDebug($"Attempting to load configuration from '{filePath}'");
@@ -88,6 +109,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Config
                 _logger.LogDebug($"Configuration file loaded successfully, containing {configuration.ScheduledEvents.Count} event(s).");
 
                 return configuration;
+#endif
             }
             catch (Exception exception)
             {
@@ -130,9 +152,9 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Config
 
         private string GetConfigFilePath()
         {
-            var programData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            var appDataDirectory = PathUtilities.GetProgramDataDirectory();
 
-            return Path.Combine(programData, "PaulZero", "WindowsRoutine", "config.json");
+            return Path.Combine(appDataDirectory, "config.json");
         }
     }
 }

@@ -5,19 +5,23 @@ using NLog;
 using NLog.Config;
 using NLog.Extensions.Logging;
 using NLog.Targets;
-using PaulZero.WindowsRoutine.Wpf.Services.Actions;
-using PaulZero.WindowsRoutine.Wpf.Services.Clock;
-using PaulZero.WindowsRoutine.Wpf.Services.Clock.Interfaces;
-using PaulZero.WindowsRoutine.Wpf.Services.Config;
-using PaulZero.WindowsRoutine.Wpf.Services.Notifications;
-using PaulZero.WindowsRoutine.Wpf.Services.Routine;
-using PaulZero.WindowsRoutine.Wpf.Windows;
+using PaulZero.RoutineEnforcer.Services.Clock;
+using PaulZero.RoutineEnforcer.Services.Clock.Interfaces;
+using PaulZero.RoutineEnforcer.Services.ComputerControl;
+using PaulZero.RoutineEnforcer.Services.ComputerControl.Interfaces;
+using PaulZero.RoutineEnforcer.Services.Config;
+using PaulZero.RoutineEnforcer.Services.Config.Interfaces;
+using PaulZero.RoutineEnforcer.Services.Notifications;
+using PaulZero.RoutineEnforcer.Services.Notifications.Interfaces;
+using PaulZero.RoutineEnforcer.Services.Routine;
+using PaulZero.RoutineEnforcer.Services.Routine.Interfaces;
+using PaulZero.RoutineEnforcer.Views.Windows;
 using System;
 using System.IO;
 using System.Text;
 using System.Windows;
 
-namespace PaulZero.WindowsRoutine.Wpf
+namespace PaulZero.RoutineEnforcer
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -26,14 +30,9 @@ namespace PaulZero.WindowsRoutine.Wpf
     {
         public static ServiceProvider AppServices { get; private set; }
 
-        public App()
-        {
-        }
-
         private void EnsureProgramDataDirectoryExists()
         {
-            var programData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-            var appDataDirectory = Path.Combine(programData, "PaulZero", "WindowsRoutine");
+            var appDataDirectory = PathUtilities.GetProgramDataDirectory();
 
             if (!Directory.Exists(appDataDirectory))
             {
@@ -54,8 +53,7 @@ namespace PaulZero.WindowsRoutine.Wpf
 
             services.AddLogging(o =>
             {
-                var programData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-                var appDataDirectory = Path.Combine(programData, "PaulZero", "WindowsRoutine");
+                var appDataDirectory = PathUtilities.GetProgramDataDirectory();
 
                 o.ClearProviders();
                 o.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
@@ -86,7 +84,7 @@ namespace PaulZero.WindowsRoutine.Wpf
 
             services.AddSingleton<INotificationService, NotificationService>();
             services.AddSingleton<IConfigService, ConfigService>();
-            services.AddSingleton<IActionService, ActionService>();
+            services.AddSingleton<IComputerControlService, ComputerControlService>();
             services.AddSingleton<IClockService, ClockService>();
             services.AddSingleton<IRoutineService, RoutineService>();
 

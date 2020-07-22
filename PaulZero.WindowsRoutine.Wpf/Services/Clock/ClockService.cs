@@ -1,18 +1,18 @@
 ﻿using Microsoft.Extensions.Logging;
-using PaulZero.WindowsRoutine.Wpf.Services.Clock.Interfaces;
-using PaulZero.WindowsRoutine.Wpf.Services.Routine;
+using PaulZero.RoutineEnforcer.Services.Clock.Interfaces;
+using PaulZero.RoutineEnforcer.Services.Routine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PaulZero.WindowsRoutine.Wpf.Services.Clock
+namespace PaulZero.RoutineEnforcer.Services.Clock
 {
     public class ClockService : IClockService
     {
         private Task _timingTask;
 
-        private readonly List<TimedCallback> _callbacks = new List<TimedCallback>();
+        private readonly List<ITimedCallback> _callbacks = new List<ITimedCallback>();
         private readonly IClockServiceCancellationProvider _cancellationProvider;
         private readonly ILogger _logger;
         private readonly IClockServiceTimeProvider _timeProvider;
@@ -29,7 +29,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Clock
             _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
         }
 
-        public void RegisterCallback(TimedCallback callback)
+        public void RegisterCallback(ITimedCallback callback)
         {
             if (callback is ScheduledEventTimedCallback s)
             {

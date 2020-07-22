@@ -1,21 +1,22 @@
 ﻿using Microsoft.Extensions.Logging;
-using PaulZero.WindowsRoutine.Wpf.Models;
-using PaulZero.WindowsRoutine.Wpf.Models.View;
-using PaulZero.WindowsRoutine.Wpf.Services.Actions;
-using PaulZero.WindowsRoutine.Wpf.Services.Clock.Interfaces;
-using PaulZero.WindowsRoutine.Wpf.Services.Config;
-using PaulZero.WindowsRoutine.Wpf.Services.Notifications;
+using PaulZero.RoutineEnforcer.Models;
+using PaulZero.RoutineEnforcer.Services.Clock.Interfaces;
+using PaulZero.RoutineEnforcer.Services.ComputerControl.Interfaces;
+using PaulZero.RoutineEnforcer.Services.Config.Interfaces;
+using PaulZero.RoutineEnforcer.Services.Notifications.Interfaces;
+using PaulZero.RoutineEnforcer.Services.Routine.Interfaces;
+using PaulZero.RoutineEnforcer.Views.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PaulZero.WindowsRoutine.Wpf.Services.Routine
+namespace PaulZero.RoutineEnforcer.Services.Routine
 {
     internal class RoutineService : IRoutineService
     {
-        private readonly IActionService _actionService;
+        private readonly IComputerControlService _actionService;
         private readonly IClockService _clockService;
         private readonly IConfigService _configService;
         private readonly ILogger _logger;
@@ -23,7 +24,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Routine
         private readonly List<ScheduledEventTimedCallback> _timedScheduledEvents = new List<ScheduledEventTimedCallback>();
         private readonly SynchronizationContext _syncContext = SynchronizationContext.Current;
 
-        public RoutineService(IActionService actionService, IClockService clockService, IConfigService configService, INotificationService notificationService, ILogger<IRoutineService> logger)
+        public RoutineService(IComputerControlService actionService, IClockService clockService, IConfigService configService, INotificationService notificationService, ILogger<IRoutineService> logger)
         {
             _actionService = actionService;
             _clockService = clockService;

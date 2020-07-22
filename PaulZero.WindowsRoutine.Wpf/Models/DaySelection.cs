@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PaulZero.WindowsRoutine.Wpf.Models
+namespace PaulZero.RoutineEnforcer.Models
 {
     public struct DaySelection
     {

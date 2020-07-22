@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Uwp.Notifications;
-using PaulZero.WindowsRoutine.Wpf.Services.Notifications;
+using PaulZero.RoutineEnforcer.Services.Notifications.Interfaces;
 using System;
 using System.Runtime.InteropServices;
 
-namespace PaulZero.WindowsRoutine.Wpf
+namespace PaulZero.RoutineEnforcer
 {
     [ClassInterface(ClassInterfaceType.None)]
     [ComSourceInterfaces(typeof(INotificationActivationCallback))]

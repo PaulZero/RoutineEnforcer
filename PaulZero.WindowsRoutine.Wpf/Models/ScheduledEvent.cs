@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text.Json.Serialization;
 
-namespace PaulZero.WindowsRoutine.Wpf.Models
+namespace PaulZero.RoutineEnforcer.Models
 {
     public class ScheduledEvent
     {

@@ -1,9 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
+using PaulZero.RoutineEnforcer.Services.Clock.Interfaces;
 using System;
 
-namespace PaulZero.WindowsRoutine.Wpf.Services.Clock
+namespace PaulZero.RoutineEnforcer.Services.Clock
 {
-    public class TimedCallback
+    public class TimedCallback : ITimedCallback
     {
         public string Id { get; }
 

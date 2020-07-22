@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace PaulZero.WindowsRoutine.Wpf.Services.Clock.Interfaces
+namespace PaulZero.RoutineEnforcer.Services.Clock.Interfaces
 {
     public interface IClockService : IDisposable
     {
-        void RegisterCallback(TimedCallback callback);
+        void RegisterCallback(ITimedCallback callback);
 
         bool RemoveCallback(string callbackId);
 
