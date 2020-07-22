@@ -85,31 +85,6 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Config
                     PropertyNameCaseInsensitive = true
                 });
 
-                // JON: I've set the first event here to happen immediately, but take an hour so there's minimal chance of inconvenience, you'll need to have at least one configured though.
-
-                var firstEvent = configuration.ScheduledEvents.FirstOrDefault(s => s.Name == "Do some debugging");
-
-                if (firstEvent != null)
-                {
-                    firstEvent.WarningTimeHour = DateTime.Now.Hour;
-                    firstEvent.WarningTimeMinute = DateTime.Now.Minute;
-                    firstEvent.ActionDelayMinutes = 60;
-                    firstEvent.ActionType = EventActionType.LockScreen;
-                    firstEvent.DaysScheduled = DaySelection.Daily;
-                }
-                else
-                {
-                    configuration.ScheduledEvents.Add(new ScheduledEvent
-                    {
-                        Name = "Do some debugging",
-                        WarningTimeHour = DateTime.Now.Hour,
-                        WarningTimeMinute = DateTime.Now.Minute,
-                        ActionDelayMinutes = 60,
-                        ActionType = EventActionType.LockScreen,
-                        DaysScheduled = DaySelection.Daily
-                    });
-                }
-
                 _logger.LogDebug($"Configuration file loaded successfully, containing {configuration.ScheduledEvents.Count} event(s).");
 
                 return configuration;

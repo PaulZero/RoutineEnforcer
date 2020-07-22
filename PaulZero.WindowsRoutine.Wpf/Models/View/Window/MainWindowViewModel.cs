@@ -85,17 +85,6 @@ namespace PaulZero.WindowsRoutine.Wpf.Models.View.Window
 
             ApplicationIcon = wpfIcon;
 
-            var notificationService = App.AppServices.GetService<INotificationService>();
-
-            if (!notificationService.CanShowNotifications)
-            {
-                HasLoadingError = true;
-
-                StatusMessage = notificationService.StatusMessage;
-
-                return;
-            }
-
             Visibility = Visibility.Collapsed;
         }
     }

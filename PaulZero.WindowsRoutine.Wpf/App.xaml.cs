@@ -84,7 +84,7 @@ namespace PaulZero.WindowsRoutine.Wpf
                 o.AddNLog(LogManager.Configuration);
             });
 
-            services.AddSingleton(s => NotificationServiceFactory.Create(s.GetService<ILogger<INotificationService>>()));
+            services.AddSingleton<INotificationService, NotificationService>();
             services.AddSingleton<IConfigService, ConfigService>();
             services.AddSingleton<IActionService, ActionService>();
             services.AddSingleton<IClockService, ClockService>();

@@ -9,8 +9,7 @@
         Title="{Binding Title}"
         SizeToContent="WidthAndHeight"
         WindowStyle="ToolWindow"
-        ResizeMode="NoResize"
-        Closing="Window_Closing">
+        ResizeMode="NoResize">
     <Window.Resources>
         <ResourceDictionary Source="../AppStyles.xaml" />
     </Window.Resources>
@@ -29,9 +28,9 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" TextAlignment="Left" Text="{Binding ProgressStatusText}" />
-                <TextBlock Grid.Column="1" TextAlignment="Right" Text="{Binding TimeRemaining}" />
+                <TextBlock Grid.Column="1" TextAlignment="Right" Text="{Binding RemainingTime}" />
             </Grid>
-            <ProgressBar Minimum="0" Maximum="100" Value="{Binding ProgressPercentage}" />
+            <ProgressBar Minimum="0" Maximum="100" Value="{Binding PercentageProgress}" />
         </StackPanel>
         
         <StackPanel Style="{StaticResource DialogFooter}">

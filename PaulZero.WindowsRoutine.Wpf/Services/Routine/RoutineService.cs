@@ -116,7 +116,7 @@ namespace PaulZero.WindowsRoutine.Wpf.Services.Routine
             var title = isSleepAction ? "Sleep Pending" : "Screen Lock Pending";
             var skipButtonLabel = isSleepAction ? "Sleep Now" : "Lock Screen Now";
 
-            await _notificationService.ShowCountdownNotificationAsync(Guid.NewGuid(), title, scheduledEvent.Name, statusText, skipButtonLabel, scheduledEvent.ActionDelay);
+            await _notificationService.ShowCountdownNotificationAsync(title, scheduledEvent.Name, statusText, skipButtonLabel, scheduledEvent.ActionDelay);
 
             if (scheduledEvent.ActionType == EventActionType.SleepComputer)
             {
