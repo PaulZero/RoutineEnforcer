@@ -1,10 +1,11 @@
 ﻿using PaulZero.RoutineEnforcer.Views.Models;
+using PaulZero.RoutineEnforcer.Views.Models.Controls;
 
 namespace PaulZero.RoutineEnforcer.Services.Routine.Interfaces
 {
     internal interface IRoutineService
     {
-        ScheduledEventViewModel[] GetTaskOverview();
+        TaskSummaryViewModel GetTaskOverview();
 
         void Start();
     }

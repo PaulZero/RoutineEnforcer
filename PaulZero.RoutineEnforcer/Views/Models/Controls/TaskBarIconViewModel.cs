@@ -18,6 +18,8 @@ namespace PaulZero.RoutineEnforcer.Views.Models.Controls
 
         public ICommand ScheduleEventCommand { get; }
 
+        public ICommand ScheduleNoComputerPeriodCommand { get; }
+
         public ICommand ViewReadmeCommand { get; }
 
         public TaskBarIconViewModel()
@@ -25,6 +27,7 @@ namespace PaulZero.RoutineEnforcer.Views.Models.Controls
             EditConfigCommand = new CallbackCommand(EditConfig);
             QuitCommand = new CallbackCommand(Quit);
             ScheduleEventCommand = new CallbackCommand(ScheduleEvent);
+            ScheduleNoComputerPeriodCommand = new CallbackCommand(ScheduleNoComputerPeriod);
             ViewReadmeCommand = new CallbackCommand(ViewReadme);
         }
 
@@ -73,6 +76,18 @@ namespace PaulZero.RoutineEnforcer.Views.Models.Controls
                 var configService = App.AppServices.GetService<IConfigService>();
 
                 configService.CreateNewScheduledEvent(window.CreateScheduledEvent());
+            }
+        }
+
+        private void ScheduleNoComputerPeriod(object parameter = null)
+        {
+            var window = new ScheduleNoComputerPeriodWindow();
+
+            if (window.ShowDialog() == true)
+            {
+                var configService = App.AppServices.GetService<IConfigService>();
+
+                configService.CreateNewNoComputerPeriod(window.CreatedNoComputerPeriod());
             }
         }
 

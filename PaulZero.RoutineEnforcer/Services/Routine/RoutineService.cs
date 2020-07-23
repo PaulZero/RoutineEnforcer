@@ -7,6 +7,7 @@ using PaulZero.RoutineEnforcer.Services.Config.Interfaces;
 using PaulZero.RoutineEnforcer.Services.Notifications.Interfaces;
 using PaulZero.RoutineEnforcer.Services.Routine.Interfaces;
 using PaulZero.RoutineEnforcer.Views.Models;
+using PaulZero.RoutineEnforcer.Views.Models.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,8 +37,11 @@ namespace PaulZero.RoutineEnforcer.Services.Routine
             _logger = logger;
             _notificationService = notificationService;
 
-            _configService.EventCreated += AddEventToTimingService;
-            _configService.EventRemoved += RemoveEventFromTimingService;
+            _configService.EventCreated += AddEventToClock;
+            _configService.EventRemoved += RemoveEventFromClock;
+
+            _configService.NoComputerPeriodCreated += AddNoComputerPeriodToClock;
+            _configService.NoComputerPeriodRemoved += RemoveNoComputerPeriodFromClock;
 
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
         }
@@ -59,12 +63,12 @@ namespace PaulZero.RoutineEnforcer.Services.Routine
             SystemEvents.PowerModeChanged -= SystemEvents_PowerModeChanged;
         }
 
-        public ScheduledEventViewModel[] GetTaskOverview()
+        public TaskSummaryViewModel GetTaskOverview()
         {
-            return _timedScheduledEvents
-                .Select(s => new ScheduledEventViewModel(s.ScheduledEvent))
-                .OrderBy(s => s.NextDueDate)
-                .ToArray();
+            var scheduledEvents = _timedScheduledEvents.Select(t => t.ScheduledEvent);
+            var noComputerPeriods = _timedNoComputerPeriods.Select(t => t.NoComputerPeriod);
+
+            return new TaskSummaryViewModel(noComputerPeriods, scheduledEvents);
         }
 
         public void Start()
@@ -77,7 +81,7 @@ namespace PaulZero.RoutineEnforcer.Services.Routine
 
             foreach (var scheduledEvent in config.ScheduledEvents)
             {
-                AddEventToTimingService(scheduledEvent);
+                AddEventToClock(scheduledEvent);
             }
 
             foreach (var noComputerPeriod in config.NoComputerPeriods)
@@ -88,7 +92,7 @@ namespace PaulZero.RoutineEnforcer.Services.Routine
             _clockService.Start();
         }
 
-        private void AddEventToTimingService(ScheduledEvent scheduledEvent)
+        private void AddEventToClock(ScheduledEvent scheduledEvent)
         {
             try
             {
@@ -142,7 +146,7 @@ namespace PaulZero.RoutineEnforcer.Services.Routine
             }
         }
 
-        private void RemoveEventFromTimingService(ScheduledEvent scheduledEvent)
+        private void RemoveEventFromClock(ScheduledEvent scheduledEvent)
         {
             var timedScheduledEvent = _timedScheduledEvents.FirstOrDefault(s => s.ScheduledEventId == scheduledEvent.Id);
 
@@ -150,6 +154,17 @@ namespace PaulZero.RoutineEnforcer.Services.Routine
             {
                 _timedScheduledEvents.Remove(timedScheduledEvent);
                 _clockService.RemoveCallback(scheduledEvent.Id);
+            }
+        }
+
+        private void RemoveNoComputerPeriodFromClock(NoComputerPeriod noComputerPeriod)
+        {
+            var timedNoComputerPeriod = _timedNoComputerPeriods.FirstOrDefault(p => p.NoComputerPeriod.Id == noComputerPeriod.Id);
+
+            if (timedNoComputerPeriod != null)
+            {
+                _timedNoComputerPeriods.Remove(timedNoComputerPeriod);
+                _clockService.RemoveCallback(timedNoComputerPeriod.Id);
             }
         }
 

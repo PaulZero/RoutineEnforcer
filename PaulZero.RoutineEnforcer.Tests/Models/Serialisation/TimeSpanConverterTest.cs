@@ -15,12 +15,12 @@ namespace PaulZero.RoutineEnforcer.Tests.Models.Serialisation
         {
             var test = new TestClass
             {
-                Value = new TimeSpan(16, 42, 12)
+                Value = new TimeSpan(16, 0, 12)
             };
 
             var json = JsonSerializer.Serialize(test);
 
-            Assert.IsTrue(json.Contains($"\"value\":\"16:42:12\"", StringComparison.OrdinalIgnoreCase));
+            Assert.IsTrue(json.Contains($"\"value\":\"16:00:12\"", StringComparison.OrdinalIgnoreCase));
 
             var deserialisedTest = JsonSerializer.Deserialize<TestClass>(json);
 

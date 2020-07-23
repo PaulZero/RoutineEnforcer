@@ -30,7 +30,7 @@ namespace PaulZero.RoutineEnforcer.Models.Serialisation
 
         public override void Write(Utf8JsonWriter writer, TimeSpan value, JsonSerializerOptions options)
         {
-            var stringValue = $"{value.Hours}:{value.Minutes}:{value.Seconds}";
+            var stringValue = $"{value.Hours:00}:{value.Minutes:00}:{value.Seconds:00}";
 
             writer.WriteStringValue(stringValue);
         }

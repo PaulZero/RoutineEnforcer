@@ -48,9 +48,28 @@ namespace PaulZero.RoutineEnforcer.Models
             return isActiveToday && currentTime >= StartTime && currentTime < EndTime;
         }
 
-        public DateTime GetNextDueDate()
+        public DateTime GetNextDueDate(DateTime currentDateTime)
         {
-            return DateTime.Now;
+            var workingDateTime = currentDateTime;
+
+            for (var i = 0; i < 7; i++)
+            {
+                workingDateTime = workingDateTime.Date.AddDays(i);
+
+                var expectedStartTime = workingDateTime.Add(StartTime);
+
+                if (IsActiveAt(expectedStartTime))
+                {
+                    if (expectedStartTime < currentDateTime)
+                    {
+                        continue;
+                    }
+
+                    return expectedStartTime;
+                }
+            }
+
+            return DateTime.MinValue;
         }
     }
 }

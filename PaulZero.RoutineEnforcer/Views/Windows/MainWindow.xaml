@@ -42,6 +42,7 @@
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Schedule Event" Command="{Binding ScheduleEventCommand}" />
+                    <MenuItem Header="Schedule No Computer Period" Command="{Binding ScheduleNoComputerPeriodCommand}" />
                     <Separator />
                     <MenuItem Header="Edit Config" Command="{Binding EditConfigCommand}" />
                     <MenuItem Header="Readme" Command="{Binding ViewReadmeCommand}" />

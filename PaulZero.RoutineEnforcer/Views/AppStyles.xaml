@@ -53,6 +53,9 @@
     <SolidColorBrush x:Key="PrimaryBackground" Color="LightSteelBlue" />
     <SolidColorBrush x:Key="PrimaryForeground" Color="Black" />
 
+    <SolidColorBrush x:Key="SecondaryBackground" Color="LightGray" />
+    <SolidColorBrush x:Key="SecondaryForeground" Color="Black" />
+
     <SolidColorBrush x:Key="WarningBackground" Color="Gold" />
     <SolidColorBrush x:Key="WarningForeground" Color="Black" />
 
@@ -86,6 +89,7 @@
 
     <Style TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource BodyForeground}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
 
     <Style TargetType="Button">
@@ -336,5 +340,103 @@
         <Setter Property="Background" Value="{StaticResource ErrorBackground}"/>
     </Style>
     
-    
+    <!-- Task summaries -->
+
+    <Style TargetType="Border" x:Key="TaskSummary">
+        <Setter Property="BorderBrush" Value="{StaticResource SecondaryBackground}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="Margin" Value="{StaticResource MarginMedium}" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="TaskSummaryHeader">
+        <Setter Property="Background" Value="{StaticResource SecondaryBackground}" />
+        <Setter Property="Foreground" Value="{StaticResource SecondaryForeground}" />
+        <Setter Property="Padding">
+            <Setter.Value>
+                <Thickness
+                    Left="{StaticResource MarginValueMedium}"
+                    Top="{StaticResource MarginValueMedium}" 
+                    Right="{StaticResource MarginValueMedium}"
+                    Bottom="0" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeExtraLarge}" />
+        <Setter Property="FontWeight" Value="DemiBold" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="TaskSummarySubHeader" BasedOn="{StaticResource TaskSummaryHeader}">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeMedium}" />
+        <Setter Property="FontStyle" Value="Italic" />
+        <Setter Property="Padding">
+            <Setter.Value>
+                <Thickness
+                    Left="{StaticResource MarginValueMedium}"
+                    Top="0" 
+                    Right="{StaticResource MarginValueMedium}"
+                    Bottom="{StaticResource MarginValueMedium}" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Border" x:Key="TaskSummary_NoComputerPeriod" BasedOn="{StaticResource TaskSummary}">
+        <Setter Property="BorderBrush" Value="{StaticResource ErrorBackground}" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="TaskSummary_NoComputerPeriod_Header" BasedOn="{StaticResource TaskSummaryHeader}">
+        <Setter Property="Background" Value="{StaticResource ErrorBackground}" />
+        <Setter Property="Foreground" Value="{StaticResource ErrorForeground}" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="TaskSummary_NoComputerPeriod_SubHeader" BasedOn="{StaticResource TaskSummarySubHeader}">
+        <Setter Property="Background" Value="{StaticResource ErrorBackground}" />
+        <Setter Property="Foreground" Value="{StaticResource ErrorForeground}" />
+    </Style>
+
+    <Style TargetType="Border" x:Key="TaskSummary_ScheduledEvent" BasedOn="{StaticResource TaskSummary}">
+        <Setter Property="BorderBrush" Value="{StaticResource PrimaryBackground}" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="TaskSummary_ScheduledEvent_Header" BasedOn="{StaticResource TaskSummaryHeader}">
+        <Setter Property="Background" Value="{StaticResource PrimaryBackground}" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryForeground}" />
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="TaskSummary_ScheduledEvent_SubHeader" BasedOn="{StaticResource TaskSummarySubHeader}">
+        <Setter Property="Background" Value="{StaticResource PrimaryBackground}" />
+        <Setter Property="Foreground" Value="{StaticResource PrimaryForeground}" />
+    </Style>
+
+    <Style TargetType="StackPanel" x:Key="TaskSummaryBody">
+        <Setter Property="Margin">
+            <Setter.Value>
+                <Thickness
+                    Left="{StaticResource MarginValueMedium}"
+                    Top="{StaticResource MarginValueMedium}"
+                    Right="{StaticResource MarginValueMedium}"
+                    Bottom="0"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="TaskBodyText">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeMedium}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="Margin">
+            <Setter.Value>
+                <Thickness
+                    Left="0"
+                    Top="0"
+                    Right="0"
+                    Bottom="{StaticResource MarginValueMedium}" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="TaskBodyLabel" BasedOn="{StaticResource TaskBodyText}">
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Margin" Value="0" />
+    </Style>
 </ResourceDictionary>
