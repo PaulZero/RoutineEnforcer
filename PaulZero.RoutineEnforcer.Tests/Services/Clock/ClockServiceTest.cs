@@ -16,6 +16,8 @@ namespace PaulZero.RoutineEnforcer.Tests.Services.Clock
         [TestMethod]
         public async Task TestThatCorrectlyGeneratesTicksAtExpectedIntervals()
         {
+            // TODO: Address occasional failures related to cancellation being requested, suspect I'm not trying to catch a task being aborted.
+
             var startTime = DateTime.Today;
             var cancellationProvider = new TestClockServiceCancellationProvider();
             var timeProvider = new TestClockServiceTimeProvider(TimeSpan.FromTicks(100), startTime, cancellationProvider, startTime.AddDays(1));
@@ -25,13 +27,13 @@ namespace PaulZero.RoutineEnforcer.Tests.Services.Clock
             var endTime = currentTime.AddDays(1);
 
             var timedCallbackExecutionState = new Dictionary<int, bool>();
-            var timedCallbacks = new Dictionary<int, TimedCallback>();
+            var timedCallbacks = new Dictionary<int, AbstractTimedCallback>();
 
             for (var taskIndex = 0; taskIndex < 1440; taskIndex++)
             {
                 var actualIndex = taskIndex;
 
-                var callback = new Action(() =>
+                var callback = new Action<ITimedCallback>(c =>
                 {
                     if (timedCallbackExecutionState[actualIndex])
                     {
@@ -41,7 +43,7 @@ namespace PaulZero.RoutineEnforcer.Tests.Services.Clock
                     timedCallbackExecutionState[actualIndex] = true;
                 });
 
-                var timedCallback = new TimedCallback(callback, currentTime.Hour, currentTime.Minute);
+                var timedCallback = new TestEventCallback(currentTime.Hour, currentTime.Minute, callback);
 
                 timedCallbacks.Add(actualIndex, timedCallback);
                 timedCallbackExecutionState.Add(actualIndex, false);
@@ -61,8 +63,31 @@ namespace PaulZero.RoutineEnforcer.Tests.Services.Clock
         }
 
         [TestMethod]
+        public async Task TestThatPeriodCallbacksWillNotRunConcurrently()
+        {
+            var startTime = DateTime.Today;
+            var cancellationProvider = new TestClockServiceCancellationProvider();
+            var timeProvider = new TestClockServiceTimeProvider(TimeSpan.FromTicks(100), startTime, cancellationProvider, startTime.AddMinutes(5));
+            using var clockService = new ClockService(cancellationProvider, new NullLogger<IClockService>(), timeProvider);
+
+            var timesCalled = 0;
+            var callback = new Action<ITimedCallback>(c => { timesCalled++; });
+
+            clockService.RegisterCallback(new TestPeriodCallback(callback));
+
+            clockService.Start();
+
+            await cancellationProvider.WaitForCancellationAsync();
+
+            Assert.AreEqual(1, timesCalled);
+        }
+
+
+        [TestMethod]
         public async Task TestThatClockServiceCorrectlyStopsAndRestarts()
         {
+            // TODO: Figure out why this intermittently fails, stupid time...
+
             var startTime = DateTime.Today;
 
             var cancellationProvider = new TestClockServiceCancellationProvider();
@@ -108,13 +133,13 @@ namespace PaulZero.RoutineEnforcer.Tests.Services.Clock
             var currentTime = startTime.AddHours(1); // Start an hour in so there's no awful race condition for cancellation
             var endTime = startTime.AddDays(1);
             var timedCallbackCount = (endTime - currentTime).TotalMinutes;
-            var timedCallbacks = new List<TimedCallback>();
+            var timedCallbacks = new List<AbstractTimedCallback>();
 
             for (var taskIndex = 0; taskIndex < timedCallbackCount; taskIndex++)
             {
                 var actualIndex = taskIndex;
 
-                var timedCallback = new TimedCallback(() => { }, currentTime.Hour, currentTime.Minute);
+                var timedCallback = new TestEventCallback(currentTime.Hour, currentTime.Minute);
 
                 timedCallbacks.Add(timedCallback);
 
@@ -138,6 +163,47 @@ namespace PaulZero.RoutineEnforcer.Tests.Services.Clock
 
             Assert.IsTrue(timedCallbacks.All(c => c.DailyExecutionState == TimedCallbackExecutionState.HasNotRun));
             Assert.IsTrue(timedCallbacks.All(c => c.LastExecutionState == TimedCallbackExecutionState.RanSuccessfully));
+        }
+
+        public class TestEventCallback : AbstractTimedCallback
+        {
+            public override bool IsPeriod => false;
+
+            public int Hour { get; set; }
+
+            public int Minute { get; set; }
+
+            public TestEventCallback(int hour, int minute)
+                : this (hour, minute, c => { })
+            {
+            }
+
+            public TestEventCallback(int hour, int minute, Action<ITimedCallback> callback)
+                : base(callback)
+            {
+                Hour = hour;
+                Minute = minute;
+            }
+
+            public override bool IsDue(DateTime currentDateTime)
+            {
+                return currentDateTime.Hour == Hour && currentDateTime.Minute == Minute;
+            }
+        }
+
+        public class TestPeriodCallback : AbstractTimedCallback
+        {
+            public TestPeriodCallback(Action<ITimedCallback> callback)
+                : base(callback)
+            {
+            }
+
+            public override bool IsPeriod => true;
+
+            public override bool IsDue(DateTime currentDateTime)
+            {
+                return true;
+            }
         }
 
         public class TestClockServiceTimeProvider : IClockServiceTimeProvider

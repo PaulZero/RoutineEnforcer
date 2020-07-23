@@ -13,6 +13,10 @@ namespace PaulZero.RoutineEnforcer.Services.Config
 
         public event Action<ScheduledEvent> EventRemoved;
 
+        public event Action<NoComputerPeriod> NoComputerPeriodCreated;
+
+        public event Action<NoComputerPeriod> NoComputerPeriodRemoved;
+
         private readonly AppConfiguration _configuration;
         private readonly ILogger _logger;
 
@@ -25,6 +29,24 @@ namespace PaulZero.RoutineEnforcer.Services.Config
         {
             _logger = logger;
             _configuration = LoadFromFile();
+        }
+
+        public void CreateNewNoComputerPeriod(NoComputerPeriod noComputerPeriod)
+        {
+            try
+            {
+                _logger.LogDebug($"Createing no computer period '{noComputerPeriod?.Name}' and saving it to configuration.");
+
+                _configuration.NoComputerPeriods.Add(noComputerPeriod);
+
+                NoComputerPeriodCreated?.Invoke(noComputerPeriod);
+
+                SaveToFile();
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, "Failed to save no computer period to configuration.");
+            }
         }
 
         public void CreateNewScheduledEvent(ScheduledEvent scheduledEvent)
@@ -42,6 +64,24 @@ namespace PaulZero.RoutineEnforcer.Services.Config
             catch (Exception exception)
             {
                 _logger.LogError(exception, "Failed to save scheduled event to configuration.");
+            }
+        }
+
+        public void RemoveNoComputerPeriod(NoComputerPeriod noComputerPeriod)
+        {
+            try
+            {
+                _logger.LogDebug($"Removing no computer period '{noComputerPeriod?.Name}' from configuration.");
+
+                _configuration.NoComputerPeriods.Remove(noComputerPeriod);
+
+                NoComputerPeriodRemoved?.Invoke(noComputerPeriod);
+
+                SaveToFile();
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, "Failed to remove no computer period from configuration.");
             }
         }
 
@@ -67,26 +107,6 @@ namespace PaulZero.RoutineEnforcer.Services.Config
         {
             try
             {
-#if DEBUG
-                _logger.LogInformation("Creating debug configuration.");
-
-                return new AppConfiguration
-                {
-                    ScheduledEvents = new List<ScheduledEvent>
-                    {
-                        new ScheduledEvent
-                        {
-                            WarningTimeHour = DateTime.Now.Hour,
-                            WarningTimeMinute = DateTime.Now.Minute,
-                            ActionDelayMinutes = 60,
-                            ActionType = EventActionType.LockScreen,
-                            DaysScheduled = DaySelection.Daily,
-                            Id = Guid.NewGuid().ToString(),
-                            Name = "Do some debugging!"
-                        }
-                    }
-                };
-#else
                 var filePath = GetConfigFilePath();
 
                 _logger.LogDebug($"Attempting to load configuration from '{filePath}'");
@@ -108,7 +128,6 @@ namespace PaulZero.RoutineEnforcer.Services.Config
                 _logger.LogDebug($"Configuration file loaded successfully, containing {configuration.ScheduledEvents.Count} event(s).");
 
                 return configuration;
-#endif
             }
             catch (Exception exception)
             {
@@ -153,7 +172,7 @@ namespace PaulZero.RoutineEnforcer.Services.Config
         {
             var appDataDirectory = PathUtilities.GetProgramDataDirectory();
 
-            return Path.Combine(appDataDirectory, "config.json");
+            return Path.Combine(appDataDirectory, "routine-config.json");
         }
     }
 }

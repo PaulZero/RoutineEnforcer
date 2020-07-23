@@ -1,13 +1,10 @@
-﻿using PaulZero.RoutineEnforcer.Views.Models;
-using System;
+﻿using PaulZero.RoutineEnforcer.Views.Models.Controls;
 
 namespace PaulZero.RoutineEnforcer.Services.Routine.Interfaces
 {
     internal interface IRoutineService
     {
-        TimeSpan GetNextWarningCountdown();
-
-        ScheduledEventViewModel[] GetTaskOverview();
+        TaskSummaryViewModel GetTaskOverview();
 
         void Start();
     }

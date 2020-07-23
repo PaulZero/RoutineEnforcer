@@ -5,6 +5,31 @@ namespace PaulZero.RoutineEnforcer.Models
 {
     public struct DaySelection
     {
+        public static class Names
+        {
+            public static class Short
+            {
+                public const string Monday = "mon";
+                public const string Tuesday = "tue";
+                public const string Wednesday = "wed";
+                public const string Thursday = "thu";
+                public const string Friday = "fri";
+                public const string Saturday = "sat";
+                public const string Sunday = "sun";
+            }
+
+            public static class Full
+            {
+                public const string Monday = "Monday";
+                public const string Tuesday = "Tuesday";
+                public const string Wednesday = "Wednesday";
+                public const string Thursday = "Thursday";
+                public const string Friday = "Friday";
+                public const string Saturday = "Saturday";
+                public const string Sunday = "Sunday";
+            }
+        }
+
         public static DaySelection Daily =>
             new DaySelection
             {
@@ -115,46 +140,63 @@ namespace PaulZero.RoutineEnforcer.Models
             return this;
         }
 
-        public string[] GetEnabledDays()
+        public string[] GetEnabledDays(bool useShortNames = false)
         {
             var days = new List<string>();
 
             if (Monday)
             {
-                days.Add("Monday");
+                days.Add(useShortNames ? Names.Short.Monday : Names.Full.Monday);
             }
 
             if (Tuesday)
             {
-                days.Add("Tuesday");
+                days.Add(useShortNames ? Names.Short.Tuesday : Names.Full.Tuesday);
             }
 
             if (Wednesday)
             {
-                days.Add("Wednesday");
+                days.Add(useShortNames ? Names.Short.Wednesday : Names.Full.Wednesday);
             }
 
             if (Thursday)
             {
-                days.Add("Thursday");
+                days.Add(useShortNames ? Names.Short.Thursday : Names.Full.Thursday);
             }
 
             if (Friday)
             {
-                days.Add("Friday");
+                days.Add(useShortNames ? Names.Short.Friday : Names.Full.Friday);
             }
 
             if (Saturday)
             {
-                days.Add("Saturday");
+                days.Add(useShortNames ? Names.Short.Saturday : Names.Full.Saturday);
             }
 
             if (Sunday)
             {
-                days.Add("Sunday");
+                days.Add(useShortNames ? Names.Short.Sunday : Names.Full.Sunday);
             }
 
             return days.ToArray();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is DaySelection other)
+            {
+                return
+                    other.Monday == Monday &&
+                    other.Tuesday == Tuesday &&
+                    other.Wednesday == Wednesday &&
+                    other.Thursday == Thursday &&
+                    other.Friday == Friday &&
+                    other.Saturday == Saturday &&
+                    other.Sunday == Sunday;
+            }
+
+            return false;
         }
     }
 }

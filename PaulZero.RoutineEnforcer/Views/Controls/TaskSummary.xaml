@@ -7,61 +7,115 @@
              xmlns:vm="clr-namespace:PaulZero.RoutineEnforcer.Views.Models"
              xmlns:vmc="clr-namespace:PaulZero.RoutineEnforcer.Views.Models.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             Loaded="TaskSummary_Loaded"
+             Width="450"
+             MaxHeight="600"
              Name="TaskSummaryControl">
-    <Grid>
-        <ItemsControl ItemsSource="{Binding ElementName=TaskSummaryControl, Path=ScheduledTasks}" Width="400">
-            <ItemsControl.Style>
-                <Style TargetType="ItemsControl">
-                    <Setter Property="Visibility" Value="Collapsed" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=TaskSummaryControl, Path=HasScheduledTasks}" Value="True">
-                            <Setter Property="Visibility" Value="Visible" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ItemsControl.Style>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type vm:ScheduledEventViewModel}">
-                    <Border Background="SteelBlue" CornerRadius="4" Margin="4">
-                        <StackPanel>
-                            <Border CornerRadius="4 4 0 0">
-                                <StackPanel>
-                                    <TextBlock FontSize="18" Foreground="White" Padding="8 8 8 2" Text="{Binding Name}" />
-                                    <TextBlock FontSize="14" Background="SteelBlue" Foreground="White" Padding="8 0 8 10" Text="{Binding NextDueSummary, StringFormat='Next due {0}'}" />
-                                </StackPanel>
-                            </Border>
-
-                            <Border Background="White" CornerRadius="0 0 4 4">
-                                <StackPanel >
-                                    <StackPanel Margin="8 8 8 4">
-                                    <TextBlock FontSize="14" Foreground="Black" FontWeight="Bold">Warning Timer</TextBlock>
-                                    <TextBlock FontSize="14" TextWrapping="Wrap" Foreground="Black" Text="{Binding EventDescription}" />
-                                </StackPanel>
-
-                                <StackPanel Margin="8">
-                                    <TextBlock FontSize="14" Foreground="Black" FontWeight="Bold">Action when timer expires</TextBlock>
-                                    <TextBlock FontSize="14" Foreground="Black" Text="{Binding ActionDescriptionText}" />
-                                </StackPanel>
-                            </StackPanel>
-                            </Border>                            
-                        </StackPanel>
-                    </Border>                    
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        
-        <TextBlock Foreground="White" Text="You have not created any scheduled tasks.">
-            <TextBlock.Style>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Visibility" Value="Visible" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=TaskSummaryControl, Path=HasScheduledTasks}" Value="True">
+    <UserControl.DataContext>
+        <vmc:TaskSummaryViewModel />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <ResourceDictionary Source="../AppStyles.xaml"/>
+    </UserControl.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Style="{StaticResource DialogRoot}">
+            <!-- This panel displays if either no computer periods or scheduled events exist -->
+            <StackPanel>
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=TaskSummaryControl, Path=DataContext.HasConfiguredTasks}" Value="True">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+            
+                <!-- No Computer Periods -->
+                <StackPanel>
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
                             <Setter Property="Visibility" Value="Collapsed" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-        </TextBlock>
-    </Grid>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=TaskSummaryControl, Path=DataContext.HasNoComputerPeriods}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    
+                    <ItemsControl ItemsSource="{Binding NoComputerPeriods}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type vm:NoComputerPeriodViewModel}">
+                                <Border Style="{StaticResource TaskSummary_NoComputerPeriod}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource TaskSummary_NoComputerPeriod_Header}" Text="{Binding Name}" />
+                                        <TextBlock Style="{StaticResource TaskSummary_NoComputerPeriod_SubHeader}" Text="{Binding NextDueSummary}" />
+
+                                        <StackPanel Style="{StaticResource TaskSummaryBody}">
+                                            <TextBlock Style="{StaticResource TaskBodyLabel}">Warning Timer</TextBlock>
+                                            <TextBlock Style="{StaticResource TaskBodyText}" Text="{Binding SleepSummary}" />
+
+                                            <TextBlock Style="{StaticResource TaskBodyLabel}">Action when timer expires</TextBlock>
+                                            <TextBlock Style="{StaticResource TaskBodyText}" Text="{Binding ActionSummary}" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+                <!-- Scheduled Events -->
+                <StackPanel>
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=TaskSummaryControl, Path=DataContext.HasScheduledEvents}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                
+                    <ItemsControl ItemsSource="{Binding ScheduledEvents}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type vm:ScheduledEventViewModel}">
+                                <Border Style="{StaticResource TaskSummary_ScheduledEvent}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource TaskSummary_ScheduledEvent_Header}" Text="{Binding Name}" />
+                                        <TextBlock Style="{StaticResource TaskSummary_ScheduledEvent_SubHeader}" Text="{Binding NextDueSummary, StringFormat='Next due {0}'}" />
+
+                                        <StackPanel Style="{StaticResource TaskSummaryBody}">
+                                            <TextBlock Style="{StaticResource TaskBodyLabel}">Warning Timer</TextBlock>
+                                            <TextBlock Style="{StaticResource TaskBodyText}" Text="{Binding EventDescription}" />
+
+                                            <TextBlock Style="{StaticResource TaskBodyLabel}">Action when timer expires</TextBlock>
+                                            <TextBlock Style="{StaticResource TaskBodyText}" Text="{Binding ActionDescriptionText}" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>            
+            </StackPanel>
+        
+            <!-- This will display if nothing has been configured -->
+            <TextBlock Foreground="White" Text="You have not created any scheduled tasks.">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=TaskSummaryControl, Path=DataContext.HasConfiguredTasks}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>
