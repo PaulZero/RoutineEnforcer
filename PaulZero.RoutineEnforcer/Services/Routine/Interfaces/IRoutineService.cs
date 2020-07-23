@@ -1,5 +1,4 @@
-﻿using PaulZero.RoutineEnforcer.Views.Models;
-using PaulZero.RoutineEnforcer.Views.Models.Controls;
+﻿using PaulZero.RoutineEnforcer.Views.Models.Controls;
 
 namespace PaulZero.RoutineEnforcer.Services.Routine.Interfaces
 {

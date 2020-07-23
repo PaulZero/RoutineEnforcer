@@ -1,5 +1,4 @@
 ﻿using PaulZero.RoutineEnforcer.Models;
-using PaulZero.RoutineEnforcer.Views.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +44,7 @@ namespace PaulZero.RoutineEnforcer.Views.Models.Controls
 
         public TaskSummaryViewModel()
             : this(CreateDebugNoComputerPeriodViewModels(), CreateDebugScheduledEventViewModels())
-        {   
+        {
         }
 
         public TaskSummaryViewModel(IEnumerable<NoComputerPeriodViewModel> noComputerPeriods, IEnumerable<ScheduledEventViewModel> scheduledEvents)

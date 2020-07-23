@@ -1,10 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PaulZero.RoutineEnforcer.Services.Routine.Interfaces;
-using PaulZero.RoutineEnforcer.Views.Models;
 using PaulZero.RoutineEnforcer.Views.Models.Controls;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 

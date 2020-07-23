@@ -6,7 +6,6 @@ using PaulZero.RoutineEnforcer.Services.ComputerControl.Interfaces;
 using PaulZero.RoutineEnforcer.Services.Config.Interfaces;
 using PaulZero.RoutineEnforcer.Services.Notifications.Interfaces;
 using PaulZero.RoutineEnforcer.Services.Routine.Interfaces;
-using PaulZero.RoutineEnforcer.Views.Models;
 using PaulZero.RoutineEnforcer.Views.Models.Controls;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,6 @@
 ﻿using PaulZero.RoutineEnforcer.Models;
 using System;
 using System.Linq;
-using Windows.Services.Maps.OfflineMaps;
 
 namespace PaulZero.RoutineEnforcer.Views.Models
 {
