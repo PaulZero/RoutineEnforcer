@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PaulZero.RoutineEnforcer.Models.Serialisation;
+using System;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -10,74 +11,28 @@ namespace PaulZero.RoutineEnforcer.Models
 
         public string Name { get; set; }
 
-        /// <summary>
-        /// 24 hour time representation of the time the first warning will be displayed.
-        /// </summary>
-        [JsonIgnore]
+        [JsonConverter(typeof(TimeSpanConverter))]
         public TimeSpan WarningTime { get; set; }
 
-        public int WarningTimeHour
-        {
-            get => WarningTime.Hours;
-            set
-            {
-                WarningTime = new TimeSpan(value, WarningTime.Minutes, 0);
-            }
-        }
-
-        public int WarningTimeMinute
-        {
-            get => WarningTime.Minutes;
-            set
-            {
-                WarningTime = new TimeSpan(WarningTime.Hours, value, 0);
-            }
-        }
-
+        [JsonConverter(typeof(DaySelectionConverter))]
         public DaySelection DaysScheduled { get; set; }
 
-
-        [JsonIgnore]
-        public DateTime WarningDateTime => DateTime.Today.Add(WarningTime);
-
-        /// <summary>
-        /// Time duration representation of how long after the warning notification action will be taken.
-        /// </summary>
-        [JsonIgnore]
+        [JsonConverter(typeof(TimeSpanConverter))]
         public TimeSpan ActionDelay { get; set; }
 
-        public int ActionDelayMinutes
-        {
-            get => ActionDelay.Minutes;
-            set
-            {
-                if (value < 1)
-                {
-                    value = 1;
-                }
-
-                if (value > 60)
-                {
-                    value = 60;
-                }
-
-                ActionDelay = TimeSpan.FromMinutes(value);
-            }
-        }
-
-        [JsonIgnore]
-        public DateTime ActionDateTime => WarningDateTime.Add(ActionDelay);
-
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public EventActionType ActionType { get; set; } = EventActionType.LockScreen;
 
         public DateTime GetNextDueDate()
         {
-            if (DateTime.Now < WarningDateTime)
+            var todayDateTime = DateTime.Today.Add(WarningTime);
+
+            if (DateTime.Now < todayDateTime)
             {
-                return WarningDateTime;
+                return todayDateTime;
             }
 
-            var currentDate = WarningDateTime.AddDays(1);
+            var currentDate = todayDateTime.AddDays(1);
 
             if (!DaysScheduled.GetEnabledDays().Any())
             {

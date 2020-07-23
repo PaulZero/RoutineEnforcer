@@ -2,6 +2,7 @@
 using PaulZero.RoutineEnforcer.Models;
 using PaulZero.RoutineEnforcer.Services.Config.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 
@@ -72,17 +73,27 @@ namespace PaulZero.RoutineEnforcer.Services.Config
 
                 return new AppConfiguration
                 {
-                    ScheduledEvents = new List<ScheduledEvent>
+                    //ScheduledEvents = new List<ScheduledEvent>
+                    //{
+                    //    new ScheduledEvent
+                    //    {
+                    //        WarningTime = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, 0),
+                    //        ActionDelay = TimeSpan.FromMinutes(60),
+                    //        ActionType = EventActionType.LockScreen,
+                    //        DaysScheduled = DaySelection.Daily,
+                    //        Id = Guid.NewGuid().ToString(),
+                    //        Name = "Do some debugging!"
+                    //    }
+                    //}
+                    NoComputerPeriods = new List<NoComputerPeriod>
                     {
-                        new ScheduledEvent
+                        new NoComputerPeriod
                         {
-                            WarningTimeHour = DateTime.Now.Hour,
-                            WarningTimeMinute = DateTime.Now.Minute,
-                            ActionDelayMinutes = 60,
-                            ActionType = EventActionType.LockScreen,
-                            DaysScheduled = DaySelection.Daily,
-                            Id = Guid.NewGuid().ToString(),
-                            Name = "Do some debugging!"
+                            Name = "You should not be on your computer, idiot.",
+                            StartTime = DateTime.Now.AddHours(-1).TimeOfDay,
+                            EndTime = DateTime.Now.AddHours(1).TimeOfDay,
+                            ActionDelay = TimeSpan.FromSeconds(30),
+                            DaysActive = DaySelection.Daily
                         }
                     }
                 };
@@ -153,7 +164,7 @@ namespace PaulZero.RoutineEnforcer.Services.Config
         {
             var appDataDirectory = PathUtilities.GetProgramDataDirectory();
 
-            return Path.Combine(appDataDirectory, "config.json");
+            return Path.Combine(appDataDirectory, "routine-config.json");
         }
     }
 }

@@ -120,7 +120,14 @@ namespace PaulZero.RoutineEnforcer.Services.Clock
 
                 InvokeDueCallbacks(currentTime);
 
-                await Task.Delay(_timeProvider.GetClockInterval(), _cancellationProvider.Token);
+                try
+                {
+                    await Task.Delay(_timeProvider.GetClockInterval(), _cancellationProvider.Token);
+                }
+                catch
+                {
+                    break;
+                }
 
                 _lastExecutionTime = currentTime;
             }
@@ -145,15 +152,37 @@ namespace PaulZero.RoutineEnforcer.Services.Clock
 
         private void InvokeDueCallbacks(DateTime currentTime)
         {
-            foreach (var callback in _callbacks)
+            var periodCallbacks = _callbacks.Where(c => c.IsPeriod);
+            var eventCallbacks = _callbacks.Where(c => !c.IsPeriod);
+
+            if (!CheckAndInvokeCallbacks(periodCallbacks, currentTime))
+            {
+                CheckAndInvokeCallbacks(eventCallbacks, currentTime);
+            }
+        }
+
+        private bool CheckAndInvokeCallbacks(IEnumerable<ITimedCallback> eventCallbacks, DateTime currentTime)
+        {
+            foreach (var callback in eventCallbacks)
             {
                 if (callback.IsDue(currentTime))
                 {
                     _logger.LogDebug($"Invoking callback identified by ID '{callback.Id}'.");
 
+                    if (callback.IsPeriod && callback.IsExecuting)
+                    {
+                        _logger.LogDebug("The callback is periodic and still flagged as executing, skipping all execution for now.");
+
+                        return true;
+                    }
+
                     callback.Invoke(_logger);
+
+                    return true;
                 }
             }
+
+            return false;
         }
 
         private void ResetDailyExecutionState()
@@ -168,16 +197,8 @@ namespace PaulZero.RoutineEnforcer.Services.Clock
         {
             _cancellationProvider?.Dispose();
 
-            if (_timingTask != null)
-            {
-                if (_timingTask.IsCompleted)
-                {
-                    return;
-                }
-
-                _timingTask.Wait();
-                _timingTask.Dispose();
-            }
+            _timingTask?.Wait();
+            _timingTask?.Dispose();
         }
     }
 }

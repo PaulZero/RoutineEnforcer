@@ -5,6 +5,10 @@ namespace PaulZero.RoutineEnforcer.Services.Clock.Interfaces
 {
     public interface ITimedCallback
     {
+        public bool IsExecuting { get; }
+
+        bool IsPeriod { get; }
+
         TimedCallbackExecutionState DailyExecutionState { get; }
 
         string Id { get; }

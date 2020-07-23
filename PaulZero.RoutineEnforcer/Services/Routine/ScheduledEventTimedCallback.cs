@@ -1,29 +1,39 @@
 ﻿using PaulZero.RoutineEnforcer.Models;
 using PaulZero.RoutineEnforcer.Services.Clock;
+using PaulZero.RoutineEnforcer.Services.Clock.Interfaces;
 using System;
 
 namespace PaulZero.RoutineEnforcer.Services.Routine
 {
-    internal class ScheduledEventTimedCallback : TimedCallback
+    internal class ScheduledEventTimedCallback : AbstractTimedCallback
     {
         public ScheduledEvent ScheduledEvent { get; }
 
         public string ScheduledEventId => ScheduledEvent.Id;
 
-        public ScheduledEventTimedCallback(ScheduledEvent scheduledEvent, Action<ScheduledEvent> eventHandler)
-            : base(() => eventHandler(scheduledEvent), scheduledEvent.WarningTime.Hours, scheduledEvent.WarningTime.Minutes)
+        public override bool IsPeriod => false;
+
+        public ScheduledEventTimedCallback(ScheduledEvent scheduledEvent, Action<ITimedCallback> eventHandler)
+            : base(eventHandler)
         {
             ScheduledEvent = scheduledEvent;
         }
 
         public override bool IsDue(DateTime currentDateTime)
         {
-            if (!base.IsDue(currentDateTime))
+            if (ScheduledEvent.DaysScheduled.IsValidFor(currentDateTime.DayOfWeek))
             {
-                return false;
+                return IsDueAtCurrentTime(currentDateTime);
             }
 
-            return ScheduledEvent.DaysScheduled.IsValidFor(currentDateTime.DayOfWeek);
+            return false;
+        }
+
+        private bool IsDueAtCurrentTime(DateTime currentDateTime)
+        {
+            return
+                currentDateTime.Hour == ScheduledEvent.WarningTime.Hours &&
+                currentDateTime.Minute == ScheduledEvent.WarningTime.Minutes;
         }
     }
 }
