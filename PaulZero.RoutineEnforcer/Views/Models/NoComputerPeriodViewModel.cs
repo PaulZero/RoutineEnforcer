@@ -6,7 +6,17 @@ namespace PaulZero.RoutineEnforcer.Views.Models
 {
     public class NoComputerPeriodViewModel
     {
+        public string Id => _noComputerPeriod.Id;
+
         public string Name => _noComputerPeriod.Name;
+
+        public TimeSpan StartTime => _noComputerPeriod.StartTime;
+
+        public TimeSpan EndTime => _noComputerPeriod.EndTime;
+
+        public TimeSpan ActionDelay => _noComputerPeriod.ActionDelay;
+
+        public DaySelection DaysActive => _noComputerPeriod.DaysActive;
 
         public DateTime NextDueDate => _noComputerPeriod.GetNextDueDate(DateTime.Now);
 
@@ -16,11 +26,25 @@ namespace PaulZero.RoutineEnforcer.Views.Models
 
         public string NextDueSummary => CreateNextDueSummary();
 
+        public string ShortSummaryText => CreateShortSummaryText();
+
         private readonly NoComputerPeriod _noComputerPeriod;
 
         public NoComputerPeriodViewModel(NoComputerPeriod noComputerPeriod)
         {
             _noComputerPeriod = noComputerPeriod;
+        }
+
+        private string CreateShortSummaryText()
+        {
+            var startTime = _noComputerPeriod.StartTime;
+            var endTime = _noComputerPeriod.EndTime;
+            var formattedStartTime = $"{startTime.Hours:00}:{startTime.Minutes:00}";
+            var formattedEndTime = $"{endTime.Hours:00}:{endTime.Minutes:00}";
+
+            var delayMinutes = _noComputerPeriod.ActionDelay.Minutes;
+
+            return $"Starts at {formattedStartTime} {CreateDailyFrequencyText()}, until {formattedEndTime} computer can only be switched on for {delayMinutes} before going to sleep. {NextDueSummary}";
         }
 
         private string CreateActionSummary()

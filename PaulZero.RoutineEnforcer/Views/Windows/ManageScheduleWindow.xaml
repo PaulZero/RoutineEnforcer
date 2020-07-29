@@ -1,0 +1,110 @@
+﻿<Window x:Class="PaulZero.RoutineEnforcer.Views.Windows.ManageScheduleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PaulZero.RoutineEnforcer.Views.Windows"
+        xmlns:vm="clr-namespace:PaulZero.RoutineEnforcer.Views.Models"
+        xmlns:vmw="clr-namespace:PaulZero.RoutineEnforcer.Views.Models.Windows"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+
+        mc:Ignorable="d"
+        Title="Manage Schedule"
+        SizeToContent="Height"
+        Width="800"
+        Name="RootWindow"
+        d:DataContext="{d:DesignInstance Type=vmw:ManageScheduleWindowViewModel, IsDesignTimeCreatable=True}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../AppStyles.xaml" />
+
+                <ResourceDictionary>
+                    <CollectionViewSource x:Key="SortedScheduledEvents" Source="{Binding ScheduledEvents}">
+                        <CollectionViewSource.SortDescriptions>
+                            <scm:SortDescription PropertyName="NextDueDate" Direction="Ascending" />
+                        </CollectionViewSource.SortDescriptions>
+                    </CollectionViewSource>
+                    <CollectionViewSource x:Key="SortedNoComputerPeriods" Source="{Binding NoComputerPeriods}">
+                        <CollectionViewSource.SortDescriptions>
+                            <scm:SortDescription PropertyName="NextDueDate" Direction="Ascending" />
+                        </CollectionViewSource.SortDescriptions>
+                    </CollectionViewSource>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>        
+    </Window.Resources>
+    <TabControl>
+        <TabItem Header="Scheduled Events">
+            <StackPanel Style="{StaticResource DialogRoot}">
+                <TextBlock Style="{StaticResource DialogHeader}">Manage Scheduled Events</TextBlock>
+
+                <StackPanel Style="{StaticResource DialogBody}">
+                    <Button Command="{Binding CreateScheduledEventCommand}" HorizontalAlignment="Right">Create</Button>
+
+                    <ScrollViewer Height="300" VerticalScrollBarVisibility="Hidden" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                        <ItemsControl ItemsSource="{Binding Source={StaticResource SortedScheduledEvents}}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:ScheduledEventViewModel}">
+                                    <Border BorderBrush="{StaticResource PrimaryBackground}" BorderThickness="0 1 0 0" Margin="0 2 0 0" Padding="0 2 0 0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="{Binding Name}" Style="{StaticResource DialogBodyHeading}" />
+                                                <TextBlock Text="{Binding ShortSummaryText}" Style="{StaticResource DialogBodyTextBlock}" />
+                                            </StackPanel>
+                                            
+                                            <Button Grid.Column="1" VerticalAlignment="Top" Command="{Binding ElementName=RootWindow, Path=DataContext.EditScheduledEventCommand}" CommandParameter="{Binding Id}">Edit</Button>
+                                            <Button Grid.Column="2" VerticalAlignment="Top" Command="{Binding ElementName=RootWindow, Path=DataContext.DeleteScheduledEventCommand}" CommandParameter="{Binding Id}">Delete</Button>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+        
+        <TabItem Header="No Computer Periods">
+            <StackPanel Style="{StaticResource DialogRoot}">
+                <TextBlock Style="{StaticResource DialogErrorHeader}">Manage No Computer Periods</TextBlock>
+
+                <StackPanel Style="{StaticResource DialogBody}">
+                    <Button Command="{Binding CreateNoComputerPeriodCommand}" HorizontalAlignment="Right">Create</Button>
+
+                    <ScrollViewer Height="300" VerticalScrollBarVisibility="Hidden" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                        <ItemsControl ItemsSource="{Binding Source={StaticResource SortedNoComputerPeriods}}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:NoComputerPeriodViewModel}">
+                                    <Border BorderBrush="{StaticResource ErrorBackground}" BorderThickness="0 1 0 0" Margin="0 2 0 0" Padding="0 2 0 0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="{Binding Name}" Style="{StaticResource DialogBodyHeading}" />
+                                                <TextBlock Text="{Binding ShortSummaryText}" Style="{StaticResource DialogBodyTextBlock}" />
+                                            </StackPanel>
+                                            
+                                            <Button Grid.Column="1" VerticalAlignment="Top" Command="{Binding ElementName=RootWindow, Path=DataContext.EditNoComputerPeriodCommand}" CommandParameter="{Binding Id}">Edit</Button>
+                                            <Button Grid.Column="2" VerticalAlignment="Top" Command="{Binding ElementName=RootWindow, Path=DataContext.DeleteNoComputerPeriodCommand}" CommandParameter="{Binding Id}">Delete</Button>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+    </TabControl>
+</Window>

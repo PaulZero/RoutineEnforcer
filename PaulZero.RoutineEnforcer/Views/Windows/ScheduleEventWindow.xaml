@@ -13,13 +13,11 @@
         WindowStyle="ToolWindow"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        Name="CreateScheduledEventWindow">
+        Name="CreateScheduledEventWindow"
+        d:DataContext="{d:DesignInstance Type=vmw:ScheduleEventWindowViewModel, IsDesignTimeCreatable=True}">
     <Window.Resources>
         <ResourceDictionary Source="../AppStyles.xaml"/>
     </Window.Resources>
-    <Window.DataContext>
-        <vmw:ScheduleEventWindowViewModel />
-    </Window.DataContext>
     <StackPanel Style="{StaticResource DialogRoot}">
         <TextBlock Style="{StaticResource DialogHeader}">Schedule new event</TextBlock>
 
@@ -42,7 +40,7 @@
                 DaysSelected="{
                     Binding ElementName=CreateScheduledEventWindow,
                     Path=DataContext.DaysSelected,
-                    Mode=OneWayToSource,
+                    Mode=TwoWay,
                     UpdateSourceTrigger=PropertyChanged,
                     ValidatesOnDataErrors=True}" />
 

@@ -6,6 +6,8 @@ namespace PaulZero.RoutineEnforcer.Views.Models
 {
     public class ScheduledEventViewModel
     {
+        public string Id => _scheduledEvent.Id;
+
         public string Name => _scheduledEvent.Name;
 
         public DateTime NextDueDate => _scheduledEvent.GetNextDueDate();
@@ -24,11 +26,13 @@ namespace PaulZero.RoutineEnforcer.Views.Models
 
         public string WarningTimeText => $"{WarningTime.Hours:00}:{WarningTime.Minutes:00} {DailyFrequencyText}";
 
-        public string ActionDelayDext => ActionDelay.Minutes == 1 ? "1 minute" : $"{ActionDelay.Minutes} minutes";
+        public string ActionDelayText => ActionDelay.Minutes == 1 ? "1 minute" : $"{ActionDelay.Minutes} minutes";
 
         public string ActionDescriptionText => ActionType == EventActionType.LockScreen ? "Screen will be locked" : "PC will be put to sleep";
 
-        public string EventDescription => $"Starts at {WarningTimeText}, and expires after {ActionDelayDext}.";
+        public string EventDescription => $"Starts at {WarningTimeText}, and expires after {ActionDelayText}.";
+
+        public string ShortSummaryText => $"Starts at {WarningTimeText}. {ActionDescriptionText} after {ActionDelayText}. Next due {NextDueSummary}.";
 
         private readonly ScheduledEvent _scheduledEvent;
 

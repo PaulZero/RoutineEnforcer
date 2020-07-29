@@ -3,6 +3,7 @@ using PaulZero.RoutineEnforcer.Models;
 using PaulZero.RoutineEnforcer.Services.Config.Interfaces;
 using System;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 
 namespace PaulZero.RoutineEnforcer.Services.Config
@@ -85,6 +86,20 @@ namespace PaulZero.RoutineEnforcer.Services.Config
             }
         }
 
+        public void RemoveNoComputerPeriodById(string noComputerPeriodId)
+        {
+            var noComputerPeriod = _configuration.NoComputerPeriods.FirstOrDefault(p => p.Id == noComputerPeriodId);
+
+            if (noComputerPeriod == null)
+            {
+                _logger.LogDebug($"Attempted to remove a no computer period with the ID {noComputerPeriod} but it doesn't exist!");
+
+                return;
+            }
+
+            RemoveNoComputerPeriod(noComputerPeriod);
+        }
+
         public void RemoveScheduledEvent(ScheduledEvent scheduledEvent)
         {
             try
@@ -100,6 +115,72 @@ namespace PaulZero.RoutineEnforcer.Services.Config
             catch (Exception exception)
             {
                 _logger.LogError(exception, "Failed to remove scheduled event from configuration.");
+            }
+        }
+
+        public void RemoveScheduledEventById(string scheduledEventId)
+        {
+            var scheduledEvent = _configuration.ScheduledEvents.FirstOrDefault(p => p.Id == scheduledEventId);
+
+            if (scheduledEvent == null)
+            {
+                _logger.LogDebug($"Attempted to remove a scheduled event with the ID {scheduledEventId} but it doesn't exist!");
+
+                return;
+            }
+
+            RemoveScheduledEvent(scheduledEvent);
+        }
+
+        public void UpdateNoComputerPeriod(NoComputerPeriod updatedNoComputerPeriod)
+        {
+            try
+            {
+                var existingNoComputerPeriod = _configuration.NoComputerPeriods.FirstOrDefault(s => s.Id == updatedNoComputerPeriod.Id);
+
+                if (existingNoComputerPeriod == null)
+                {
+                    _logger.LogDebug($"Attempted to update a no computer period with the ID '{updatedNoComputerPeriod.Id}' but it doesn't exist!");
+
+                    return;
+                }
+
+                _logger.LogDebug($"Updating no computer period with the ID '{updatedNoComputerPeriod.Id}");
+
+                _configuration.NoComputerPeriods.Remove(existingNoComputerPeriod);
+                _configuration.NoComputerPeriods.Add(updatedNoComputerPeriod);
+
+                SaveToFile();
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, "Failed to update no computer period.");
+            }
+        }
+
+        public void UpdateScheduledEvent(ScheduledEvent updatedScheduledEvent)
+        {
+            try
+            {
+                var existingScheduledEvent = _configuration.ScheduledEvents.FirstOrDefault(s => s.Id == updatedScheduledEvent.Id);
+
+                if (existingScheduledEvent == null)
+                {
+                    _logger.LogDebug($"Attempted to update a scheduled event with the ID '{updatedScheduledEvent.Id}' but it doesn't exist!");
+
+                    return;
+                }
+
+                _logger.LogDebug($"Updating scheduled event with the ID '{updatedScheduledEvent.Id}");
+
+                _configuration.ScheduledEvents.Remove(existingScheduledEvent);
+                _configuration.ScheduledEvents.Add(updatedScheduledEvent);
+
+                SaveToFile();
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, "Failed to update no computer period.");
             }
         }
 
@@ -170,9 +251,15 @@ namespace PaulZero.RoutineEnforcer.Services.Config
 
         private string GetConfigFilePath()
         {
+#if (DEBUG)
+            var fileName = "routine-config-debug.json";
+#else
+            var fileName = "routine-config.json";
+#endif
+
             var appDataDirectory = PathUtilities.GetProgramDataDirectory();
 
-            return Path.Combine(appDataDirectory, "routine-config.json");
+            return Path.Combine(appDataDirectory, fileName);
         }
     }
 }

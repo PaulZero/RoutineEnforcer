@@ -1,0 +1,25 @@
+﻿<Window x:Class="PaulZero.RoutineEnforcer.Views.Dialogs.ConfirmationDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PaulZero.RoutineEnforcer.Views.Dialogs"
+        xmlns:vmd="clr-namespace:PaulZero.RoutineEnforcer.Views.Models.Dialogs"
+        mc:Ignorable="d"
+        Width="600"
+        ResizeMode="NoResize"
+        WindowStyle="ToolWindow"
+        SizeToContent="Height"
+        d:DataContext="{d:DesignInstance Type=vmd:ConfirmationDialogViewModel, IsDesignTimeCreatable=True}">
+    <Window.Resources>
+        <ResourceDictionary Source="../AppStyles.xaml" />
+    </Window.Resources>
+    <StackPanel Style="{StaticResource DialogRoot}">
+        <TextBlock Style="{StaticResource DialogHeader}" Text="{Binding TitleText }"/>
+        <TextBlock Style="{StaticResource DialogBodyTextBlock}" Text="{Binding Message}" />
+        <StackPanel Style="{StaticResource DialogFooter}">
+            <Button Command="{Binding CancelCommand}" Content="{Binding CancelText, FallbackValue=Cancel}" />
+            <Button Command="{Binding OkCommand}" Content="{Binding OkText, FallbackValue=OK}" />
+        </StackPanel>
+    </StackPanel>
+</Window>

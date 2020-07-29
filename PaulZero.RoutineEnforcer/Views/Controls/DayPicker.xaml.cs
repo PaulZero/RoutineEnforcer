@@ -18,8 +18,8 @@ namespace PaulZero.RoutineEnforcer.Views.Controls
                 typeof(DaySelection),
                 typeof(DayPicker),
                 new FrameworkPropertyMetadata(
-                    DaySelection.Daily,
-                    FrameworkPropertyMetadataOptions.AffectsRender,
+                    DaySelection.Empty,
+                    FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                     OnDaySelectionChanged));
 
         private static void OnDaySelectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -30,6 +30,11 @@ namespace PaulZero.RoutineEnforcer.Views.Controls
             }
 
             d.SetValue(e.Property, e.NewValue);
+
+            if (d is DayPicker dayPicker)
+            {
+                dayPicker.ViewModel.Selection = (DaySelection)e.NewValue;
+            }
         }
 
         public DayPickerViewModel ViewModel

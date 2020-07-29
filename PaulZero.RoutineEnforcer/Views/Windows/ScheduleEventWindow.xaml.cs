@@ -1,6 +1,6 @@
 ﻿using PaulZero.RoutineEnforcer.Models;
+using PaulZero.RoutineEnforcer.Views.Models;
 using PaulZero.RoutineEnforcer.Views.Models.Windows;
-using System;
 using System.Windows;
 
 namespace PaulZero.RoutineEnforcer.Views.Windows
@@ -17,8 +17,20 @@ namespace PaulZero.RoutineEnforcer.Views.Windows
         }
 
         public ScheduleEventWindow()
+            : this(new ScheduleEventWindowViewModel())
+        {
+        }
+
+        public ScheduleEventWindow(ScheduledEventViewModel existingScheduledEvent)
+            : this(new ScheduleEventWindowViewModel(existingScheduledEvent))
+        {
+        }
+
+        public ScheduleEventWindow(ScheduleEventWindowViewModel viewModel)
         {
             InitializeComponent();
+
+            ViewModel = viewModel;
 
             ViewModel.DialogResultSet += ViewModel_DialogResultSet;
         }
@@ -29,15 +41,6 @@ namespace PaulZero.RoutineEnforcer.Views.Windows
         }
 
         public ScheduledEvent CreateScheduledEvent()
-        {
-            return new ScheduledEvent
-            {
-                Name = ViewModel.Name,
-                WarningTime = ViewModel.SelectedTime,
-                ActionDelay = TimeSpan.FromMinutes(ViewModel.MinutesDelay),
-                ActionType = ViewModel.ActionType.ActionType,
-                DaysScheduled = ViewModel.DaysSelected
-            };
-        }
+            => ViewModel.GetScheduledEvent();
     }
 }

@@ -14,6 +14,8 @@ namespace PaulZero.RoutineEnforcer.Views.Models.Controls
     {
         public ICommand EditConfigCommand { get; }
 
+        public ICommand ManageScheduleCommand { get; }
+
         public ICommand QuitCommand { get; }
 
         public ICommand ScheduleEventCommand { get; }
@@ -25,6 +27,7 @@ namespace PaulZero.RoutineEnforcer.Views.Models.Controls
         public TaskBarIconViewModel()
         {
             EditConfigCommand = new CallbackCommand(EditConfig);
+            ManageScheduleCommand = new CallbackCommand(ManageSchedule);
             QuitCommand = new CallbackCommand(Quit);
             ScheduleEventCommand = new CallbackCommand(ScheduleEvent);
             ScheduleNoComputerPeriodCommand = new CallbackCommand(ScheduleNoComputerPeriod);
@@ -62,6 +65,13 @@ namespace PaulZero.RoutineEnforcer.Views.Models.Controls
             Process.Start("notepad", configFilePath);
         }
 
+        private void ManageSchedule(object parameter = null)
+        {
+            var window = App.AppServices.GetService<ManageScheduleWindow>();
+
+            window.Show();
+        }
+
         private void Quit(object parameter = null)
         {
             Environment.Exit(0);
@@ -87,7 +97,7 @@ namespace PaulZero.RoutineEnforcer.Views.Models.Controls
             {
                 var configService = App.AppServices.GetService<IConfigService>();
 
-                configService.CreateNewNoComputerPeriod(window.CreatedNoComputerPeriod());
+                configService.CreateNewNoComputerPeriod(window.CreateNoComputerPeriod());
             }
         }
 

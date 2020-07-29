@@ -1,10 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Uwp.Notifications;
-using NLog;
-using NLog.Config;
-using NLog.Extensions.Logging;
-using NLog.Targets;
+using PaulZero.RoutineEnforcer.Services;
 using PaulZero.RoutineEnforcer.Services.Clock;
 using PaulZero.RoutineEnforcer.Services.Clock.Interfaces;
 using PaulZero.RoutineEnforcer.Services.ComputerControl;
@@ -15,6 +12,7 @@ using PaulZero.RoutineEnforcer.Services.Notifications;
 using PaulZero.RoutineEnforcer.Services.Notifications.Interfaces;
 using PaulZero.RoutineEnforcer.Services.Routine;
 using PaulZero.RoutineEnforcer.Services.Routine.Interfaces;
+using PaulZero.RoutineEnforcer.Views.Models.Windows;
 using PaulZero.RoutineEnforcer.Views.Windows;
 using System;
 using System.IO;
@@ -29,6 +27,26 @@ namespace PaulZero.RoutineEnforcer
     public partial class App : Application
     {
         public static ServiceProvider AppServices { get; private set; }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            ConfigureToastNotifications();
+            ConfigureServices();
+            EnsureProgramDataDirectoryExists();
+
+            var routineService = AppServices.GetService<IRoutineService>();
+
+            routineService.Start();
+
+            AppServices.GetService<MainWindow>().Show();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            AppServices.Dispose();
+
+            base.OnExit(e);
+        }
 
         private void EnsureProgramDataDirectoryExists()
         {
@@ -51,49 +69,28 @@ namespace PaulZero.RoutineEnforcer
         {
             var services = new ServiceCollection();
 
-            services.AddLogging(o =>
-            {
-                var appDataDirectory = PathUtilities.GetProgramDataDirectory();
+            // Add logging and all core services.
 
-                o.ClearProviders();
-                o.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+            services
+                .AddRoutineEnforcerLogging()
+                .AddSingleton<INotificationService, NotificationService>()
+                .AddSingleton<IConfigService, ConfigService>()
+                .AddSingleton<IComputerControlService, ComputerControlService>()
+                .AddSingleton<IClockService, ClockService>()
+                .AddSingleton<IRoutineService, RoutineService>();
 
-                var config = new LoggingConfiguration();
-                var fileTarget = new FileTarget
-                {
-                    Name = "file",
-                    FileName = Path.Combine(appDataDirectory, "RoutineEnforcer.log"),
-                    FileNameKind = FilePathKind.Absolute,
-                    ArchiveOldFileOnStartup = true,
-                    AutoFlush = true,
-                    ArchiveFileName = Path.Combine(appDataDirectory, "RoutineEnforcer.{#}.log"),
-                    ArchiveFileKind = FilePathKind.Absolute,
-                    ArchiveNumbering = ArchiveNumberingMode.Date,
-                    ArchiveDateFormat = "yyyy-MM-dd",
-                    ArchiveEvery = FileArchivePeriod.Day,
-                    MaxArchiveFiles = 7
-                };
+            // Add view models
+            // TODO: Refactor existing view models to work this way...
 
-                config.AddTarget(fileTarget);
-                config.AddRuleForAllLevels(fileTarget);
+            services.AddTransient<ManageScheduleWindowViewModel>();
 
-                LogManager.Configuration = config;
+            // Add windows
+            // TODO: Refactor existing windows to take their view models via DI...            
 
-                o.AddNLog(LogManager.Configuration);
-            });
-
-            services.AddSingleton<INotificationService, NotificationService>();
-            services.AddSingleton<IConfigService, ConfigService>();
-            services.AddSingleton<IComputerControlService, ComputerControlService>();
-            services.AddSingleton<IClockService, ClockService>();
-            services.AddSingleton<IRoutineService, RoutineService>();
+            services.AddSingleton<MainWindow>();
+            services.AddTransient<ManageScheduleWindow>();
 
             AppServices = services.BuildServiceProvider();
-        }
-
-        private void App_Exit(object sender, ExitEventArgs e)
-        {
-            AppServices.Dispose();
         }
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
@@ -145,17 +142,6 @@ namespace PaulZero.RoutineEnforcer
             }
 
             e.Handled = true;
-        }
-
-        private void Application_Startup(object sender, StartupEventArgs e)
-        {
-            ConfigureToastNotifications();
-            ConfigureServices();
-            EnsureProgramDataDirectoryExists();
-
-            var routineService = AppServices.GetService<IRoutineService>();
-
-            routineService.Start();
         }
     }
 }
