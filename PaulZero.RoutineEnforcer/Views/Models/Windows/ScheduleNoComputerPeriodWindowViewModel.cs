@@ -107,7 +107,7 @@ namespace PaulZero.RoutineEnforcer.Views.Models.Windows
 
         public ICommand SchedulePeriodCommand => _schedulePeriodCommand;
 
-        private string _existingPeriodId;
+        private readonly string _existingPeriodId;
         private string _name;
         private TimeSpan _startTime;
         private TimeSpan _endTime;

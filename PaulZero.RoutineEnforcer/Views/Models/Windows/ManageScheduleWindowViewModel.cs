@@ -29,7 +29,7 @@ namespace PaulZero.RoutineEnforcer.Views.Models.Windows
 
         public ICommand EditScheduledEventCommand { get; private set; }
 
-        private IConfigService _configService;
+        private readonly IConfigService _configService;
 
         public ManageScheduleWindowViewModel()
         {

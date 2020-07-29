@@ -22,7 +22,7 @@ namespace PaulZero.RoutineEnforcer.Views.Models.Dialogs
 
         public ConfirmationDialogViewModel()
             : this("Please Confirm", "Confirm whether you wish to do the thing.")
-        {   
+        {
         }
 
         public ConfirmationDialogViewModel(string titleText, string message, string okText = "OK", string cancelText = "Cancel")

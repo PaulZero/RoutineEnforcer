@@ -1,10 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Uwp.Notifications;
-using NLog;
-using NLog.Config;
-using NLog.Extensions.Logging;
-using NLog.Targets;
 using PaulZero.RoutineEnforcer.Services;
 using PaulZero.RoutineEnforcer.Services.Clock;
 using PaulZero.RoutineEnforcer.Services.Clock.Interfaces;

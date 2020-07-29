@@ -34,13 +34,13 @@ namespace PaulZero.RoutineEnforcer.Views.Controls
             }
         }
 
-        private bool _internalUpdate;
+        private readonly bool _internalUpdate;
 
         public TimeSpan SelectedTime
         {
             get { return (TimeSpan)GetValue(SelectedTimeProperty); }
             set
-            { 
+            {
                 SetValue(SelectedTimeProperty, value);
             }
         }
