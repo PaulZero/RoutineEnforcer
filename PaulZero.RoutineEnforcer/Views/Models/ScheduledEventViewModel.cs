@@ -6,6 +6,8 @@ namespace PaulZero.RoutineEnforcer.Views.Models
 {
     public class ScheduledEventViewModel
     {
+        public string Id => _scheduledEvent.Id;
+
         public string Name => _scheduledEvent.Name;
 
         public DateTime NextDueDate => _scheduledEvent.GetNextDueDate();

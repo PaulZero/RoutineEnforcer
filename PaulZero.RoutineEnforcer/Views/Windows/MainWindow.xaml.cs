@@ -59,6 +59,8 @@ namespace PaulZero.RoutineEnforcer.Views.Windows
             using var imageStream = new MemoryStream(Resource.clock_icon);
 
             TaskbarIcon.Icon = new Icon(imageStream);
+
+            Visibility = Visibility.Collapsed;
         }
     }
 }

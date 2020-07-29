@@ -41,6 +41,7 @@
             </tb:TaskbarIcon.TrayToolTip>
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
+                    <MenuItem Header="Manage Schedule" Command="{Binding ManageScheduleCommand}" />
                     <MenuItem Header="Schedule Event" Command="{Binding ScheduleEventCommand}" />
                     <MenuItem Header="Schedule No Computer Period" Command="{Binding ScheduleNoComputerPeriodCommand}" />
                     <Separator />

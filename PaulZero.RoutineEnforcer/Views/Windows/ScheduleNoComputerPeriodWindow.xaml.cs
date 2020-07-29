@@ -28,7 +28,7 @@ namespace PaulZero.RoutineEnforcer.Views.Windows
             DialogResult = dialogResult;
         }
 
-        public NoComputerPeriod CreatedNoComputerPeriod()
+        public NoComputerPeriod CreateNoComputerPeriod()
         {
             return new NoComputerPeriod
             {

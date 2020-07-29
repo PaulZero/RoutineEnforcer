@@ -3,7 +3,7 @@ using System;
 
 namespace PaulZero.RoutineEnforcer.Services.Config.Interfaces
 {
-    internal interface IConfigService
+    public interface IConfigService
     {
         event Action<ScheduledEvent> EventCreated;
 
@@ -21,6 +21,10 @@ namespace PaulZero.RoutineEnforcer.Services.Config.Interfaces
 
         void RemoveNoComputerPeriod(NoComputerPeriod noComputerPeriod);
 
+        void RemoveNoComputerPeriodById(string noComputerPeriodId);
+
         void RemoveScheduledEvent(ScheduledEvent scheduledEvent);
+
+        void RemoveScheduledEventById(string scheduledEventId);
     }
 }

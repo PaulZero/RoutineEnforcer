@@ -6,6 +6,8 @@ namespace PaulZero.RoutineEnforcer.Views.Models
 {
     public class NoComputerPeriodViewModel
     {
+        public string Id => _noComputerPeriod.Id;
+
         public string Name => _noComputerPeriod.Name;
 
         public DateTime NextDueDate => _noComputerPeriod.GetNextDueDate(DateTime.Now);
