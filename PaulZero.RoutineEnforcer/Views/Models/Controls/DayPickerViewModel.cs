@@ -13,6 +13,8 @@ namespace PaulZero.RoutineEnforcer.Views.Models.Controls
             {
                 _daySelection = value;
 
+                IsAllDaysChecked = value.Equals(DaySelection.Daily);
+
                 NotifyPropertyChanged();
                 NotifyPropertyChanged(nameof(IsMondaySelected));
                 NotifyPropertyChanged(nameof(IsTuesdaySelected));
@@ -130,7 +132,7 @@ namespace PaulZero.RoutineEnforcer.Views.Models.Controls
             _selectAllDaysCommand = new CallbackCommand(CanSelectAllDays, DoSelectAllDays);
             _selectSpecificDaysCommand = new CallbackCommand(CanSelectSpecificDays, DoSelectSpecificDays);
 
-            DoSelectAllDays();
+            //DoSelectAllDays();
         }
 
         private bool CanSelectAllDays(object parameter = default)

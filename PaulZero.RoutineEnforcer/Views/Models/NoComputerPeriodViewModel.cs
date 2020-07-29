@@ -10,6 +10,14 @@ namespace PaulZero.RoutineEnforcer.Views.Models
 
         public string Name => _noComputerPeriod.Name;
 
+        public TimeSpan StartTime => _noComputerPeriod.StartTime;
+
+        public TimeSpan EndTime => _noComputerPeriod.EndTime;
+
+        public TimeSpan ActionDelay => _noComputerPeriod.ActionDelay;
+
+        public DaySelection DaysActive => _noComputerPeriod.DaysActive;
+
         public DateTime NextDueDate => _noComputerPeriod.GetNextDueDate(DateTime.Now);
 
         public string ActionSummary => CreateActionSummary();

@@ -160,11 +160,39 @@ namespace PaulZero.RoutineEnforcer.Views.Models.Windows
         private void EditNoComputerPeriod(object periodId)
         {
             var noComputerPeriod = NoComputerPeriods.FirstOrDefault(p => p.Id == periodId?.ToString());
+
+            if (noComputerPeriod == null)
+            {
+                return;
+            }
+
+            var window = new ScheduleNoComputerPeriodWindow(noComputerPeriod);
+
+            if (window.ShowDialog() == true)
+            {
+                var updatedNoComputerPeriod = window.CreateNoComputerPeriod();
+
+                _configService.UpdateNoComputerPeriod(updatedNoComputerPeriod);
+
+                NoComputerPeriods.Remove(noComputerPeriod);
+                NoComputerPeriods.Add(new NoComputerPeriodViewModel(updatedNoComputerPeriod));
+            }
         }
 
         private void EditScheduledEvent(object eventId)
         {
             var scheduledEvent = ScheduledEvents.FirstOrDefault(e => e.Id == eventId?.ToString());
+            var window = new ScheduleEventWindow(scheduledEvent);
+
+            if (window.ShowDialog() == true)
+            {
+                var updatedScheduledEvent = window.CreateScheduledEvent();
+
+                _configService.UpdateScheduledEvent(updatedScheduledEvent);
+
+                ScheduledEvents.Remove(scheduledEvent);
+                ScheduledEvents.Add(new ScheduledEventViewModel(updatedScheduledEvent));
+            }
         }
     }
 }

@@ -26,5 +26,9 @@ namespace PaulZero.RoutineEnforcer.Services.Config.Interfaces
         void RemoveScheduledEvent(ScheduledEvent scheduledEvent);
 
         void RemoveScheduledEventById(string scheduledEventId);
+
+        void UpdateNoComputerPeriod(NoComputerPeriod updatedNoComputerPeriod);
+
+        void UpdateScheduledEvent(ScheduledEvent updatedScheduledEvent);
     }
 }

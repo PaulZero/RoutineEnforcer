@@ -43,6 +43,25 @@ namespace PaulZero.RoutineEnforcer.Views.Models.Windows
             }
         }
 
+        public NoComputerPeriod GetNoComputerPeriod()
+        {
+            var noComputerPeriod = new NoComputerPeriod
+            {
+                Name = Name,
+                StartTime = StartTime,
+                EndTime = EndTime,
+                DaysActive = DaysSelected,
+                ActionDelay = TimeSpan.FromMinutes(MinutesDelay)
+            };
+
+            if (!string.IsNullOrWhiteSpace(_existingPeriodId))
+            {
+                noComputerPeriod.Id = _existingPeriodId;
+            }
+
+            return noComputerPeriod;
+        }
+
         public TimeSpan EndTime
         {
             get => _endTime;
@@ -88,6 +107,7 @@ namespace PaulZero.RoutineEnforcer.Views.Models.Windows
 
         public ICommand SchedulePeriodCommand => _schedulePeriodCommand;
 
+        private string _existingPeriodId;
         private string _name;
         private TimeSpan _startTime;
         private TimeSpan _endTime;
@@ -101,7 +121,33 @@ namespace PaulZero.RoutineEnforcer.Views.Models.Windows
             _cancelCommand = new CallbackCommand(Cancel);
             _schedulePeriodCommand = new CallbackCommand(CanSchedulePeriod, SchedulePeriod);
 
-            MinutesDelay = 5;
+            _minutesDelay = 5;
+            _daysSelected = DaySelection.Daily;
+        }
+
+        public ScheduleNoComputerPeriodWindowViewModel(NoComputerPeriodViewModel existingNoComputerPeriod)
+        {
+            _cancelCommand = new CallbackCommand(Cancel);
+            _schedulePeriodCommand = new CallbackCommand(CanSchedulePeriod, SchedulePeriod);
+
+            _existingPeriodId = existingNoComputerPeriod.Id;
+            _name = existingNoComputerPeriod.Name;
+            _startTime = existingNoComputerPeriod.StartTime;
+            _endTime = existingNoComputerPeriod.EndTime;
+            _daysSelected = existingNoComputerPeriod.DaysActive;
+
+            var minutesDelay = (int)existingNoComputerPeriod.ActionDelay.TotalMinutes;
+
+            if (minutesDelay < AvailableMinutesDelay.Min())
+            {
+                minutesDelay = AvailableMinutesDelay.Min();
+            }
+            else if (minutesDelay > AvailableMinutesDelay.Max())
+            {
+                minutesDelay = AvailableMinutesDelay.Max();
+            }
+
+            _minutesDelay = minutesDelay;
         }
 
         protected override void NotifyPropertyChanged([CallerMemberName] string propertyName = null)

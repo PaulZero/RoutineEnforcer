@@ -56,7 +56,7 @@
                 DaysSelected="{
                     Binding ElementName=ScheduleWindow,
                     Path=DataContext.DaysSelected,
-                    Mode=OneWayToSource,
+                    Mode=TwoWay,
                     UpdateSourceTrigger=PropertyChanged,
                     ValidatesOnDataErrors=True}" />
 

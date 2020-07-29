@@ -1,6 +1,6 @@
 ﻿using PaulZero.RoutineEnforcer.Models;
+using PaulZero.RoutineEnforcer.Views.Models;
 using PaulZero.RoutineEnforcer.Views.Models.Windows;
-using System;
 using System.Windows;
 
 namespace PaulZero.RoutineEnforcer.Views.Windows
@@ -17,8 +17,20 @@ namespace PaulZero.RoutineEnforcer.Views.Windows
         }
 
         public ScheduleNoComputerPeriodWindow()
+            : this(new ScheduleNoComputerPeriodWindowViewModel())
+        {
+        }
+
+        public ScheduleNoComputerPeriodWindow(NoComputerPeriodViewModel existingNoComputerPeriod)
+            : this(new ScheduleNoComputerPeriodWindowViewModel(existingNoComputerPeriod))
+        {
+        }
+
+        public ScheduleNoComputerPeriodWindow(ScheduleNoComputerPeriodWindowViewModel viewModel)
         {
             InitializeComponent();
+
+            ViewModel = viewModel;
 
             ViewModel.DialogResultSet += ViewModel_DialogResultSet;
         }
@@ -29,15 +41,6 @@ namespace PaulZero.RoutineEnforcer.Views.Windows
         }
 
         public NoComputerPeriod CreateNoComputerPeriod()
-        {
-            return new NoComputerPeriod
-            {
-                Name = ViewModel.Name,
-                StartTime = ViewModel.StartTime,
-                EndTime = ViewModel.EndTime,
-                DaysActive = ViewModel.DaysSelected,
-                ActionDelay = TimeSpan.FromMinutes(ViewModel.MinutesDelay)
-            };
-        }
+            => ViewModel.GetNoComputerPeriod();
     }
 }

@@ -132,6 +132,58 @@ namespace PaulZero.RoutineEnforcer.Services.Config
             RemoveScheduledEvent(scheduledEvent);
         }
 
+        public void UpdateNoComputerPeriod(NoComputerPeriod updatedNoComputerPeriod)
+        {
+            try
+            {
+                var existingNoComputerPeriod = _configuration.NoComputerPeriods.FirstOrDefault(s => s.Id == updatedNoComputerPeriod.Id);
+
+                if (existingNoComputerPeriod == null)
+                {
+                    _logger.LogDebug($"Attempted to update a no computer period with the ID '{updatedNoComputerPeriod.Id}' but it doesn't exist!");
+
+                    return;
+                }
+
+                _logger.LogDebug($"Updating no computer period with the ID '{updatedNoComputerPeriod.Id}");
+
+                _configuration.NoComputerPeriods.Remove(existingNoComputerPeriod);
+                _configuration.NoComputerPeriods.Add(updatedNoComputerPeriod);
+
+                SaveToFile();
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, "Failed to update no computer period.");
+            }
+        }
+
+        public void UpdateScheduledEvent(ScheduledEvent updatedScheduledEvent)
+        {
+            try
+            {
+                var existingScheduledEvent = _configuration.ScheduledEvents.FirstOrDefault(s => s.Id == updatedScheduledEvent.Id);
+
+                if (existingScheduledEvent == null)
+                {
+                    _logger.LogDebug($"Attempted to update a scheduled event with the ID '{updatedScheduledEvent.Id}' but it doesn't exist!");
+
+                    return;
+                }
+
+                _logger.LogDebug($"Updating scheduled event with the ID '{updatedScheduledEvent.Id}");
+
+                _configuration.ScheduledEvents.Remove(existingScheduledEvent);
+                _configuration.ScheduledEvents.Add(updatedScheduledEvent);
+
+                SaveToFile();
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, "Failed to update no computer period.");
+            }
+        }
+
         private AppConfiguration LoadFromFile()
         {
             try

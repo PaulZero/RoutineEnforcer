@@ -16,12 +16,33 @@ namespace PaulZero.RoutineEnforcer.Views.Controls
         public event PropertyChangedEventHandler PropertyChanged;
 
         public static readonly DependencyProperty SelectedTimeProperty =
-               DependencyProperty.Register("SelectedTime", typeof(TimeSpan), typeof(TimePicker), new PropertyMetadata(TimeSpan.Zero));
+               DependencyProperty.Register("SelectedTime", typeof(TimeSpan), typeof(TimePicker), new FrameworkPropertyMetadata(TimeSpan.Zero, FrameworkPropertyMetadataOptions.AffectsRender, OnSelectedTimeChanged)); // new PropertyMetadata(TimeSpan.Zero));
+
+        private static void OnSelectedTimeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.OldValue == e.NewValue)
+            {
+                return;
+            }
+
+            d.SetValue(e.Property, e.NewValue);
+
+            if (d is TimePicker timePicker)
+            {
+                timePicker.NotifyPropertyChanged(nameof(timePicker.Hours));
+                timePicker.NotifyPropertyChanged(nameof(timePicker.Minutes));
+            }
+        }
+
+        private bool _internalUpdate;
 
         public TimeSpan SelectedTime
         {
             get { return (TimeSpan)GetValue(SelectedTimeProperty); }
-            set { SetValue(SelectedTimeProperty, value); }
+            set
+            { 
+                SetValue(SelectedTimeProperty, value);
+            }
         }
 
         public int Hours
