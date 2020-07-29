@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="Routine Enforcer" Language="1033" Version="0.5.0.0" Manufacturer="PaulZero" UpgradeCode="3ae70114-f321-41cb-83f0-8a4b565c1b49">
+	<Product Id="*" Name="Routine Enforcer" Language="1033" Version="0.6.0.0" Manufacturer="PaulZero" UpgradeCode="3ae70114-f321-41cb-83f0-8a4b565c1b49">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />

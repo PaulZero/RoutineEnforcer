@@ -252,7 +252,7 @@ namespace PaulZero.RoutineEnforcer.Services.Config
         private string GetConfigFilePath()
         {
 #if (DEBUG)
-            var fileName = "routine-config-debug.json";
+            var fileName = "routine-config.json";
 #else
             var fileName = "routine-config.json";
 #endif

@@ -22,12 +22,18 @@ namespace PaulZero.RoutineEnforcer.Services.Notifications
 
         public void CancelToastNotification(Guid id)
         {
-            if (_currentNotifications.TryGetValue(id, out var notification))
-            {
-                _currentNotifications.Remove(id);
+            _logger.LogDebug($"Cancellation request received for notification {id}.");
 
-                notification.Skip();
+            if (!_currentNotifications.TryGetValue(id, out var notification))
+            {
+                _logger.LogDebug($"Unable to find notification {id} to cancel!");
+
+                return;
             }
+
+            _currentNotifications.Remove(id);
+
+            notification.Skip();
         }
 
         public async Task ShowCountdownNotificationAsync(string title, string message, string progressStatus, string skipButtonLabel, TimeSpan delay)

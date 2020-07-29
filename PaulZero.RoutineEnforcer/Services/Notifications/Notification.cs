@@ -52,6 +52,11 @@ namespace PaulZero.RoutineEnforcer.Services.Notifications
 
             for (var i = 1; i <= _delay.TotalSeconds; i++)
             {
+                if (_tokenSource.IsCancellationRequested)
+                {
+                    break;
+                }
+
                 var updateNumber = (uint)(i + 1);
                 var updateData = new NotificationUpdateData(updateNumber, _delay, _delay.Subtract(TimeSpan.FromSeconds(i)));
 
