@@ -46,6 +46,14 @@ namespace PaulZero.RoutineEnforcer.Views.Models.Windows
                     EndTime = new TimeSpan(8, 0, 0),
                     ActionDelay = TimeSpan.FromMinutes(10),
                     DaysActive = DaySelection.Daily
+                },
+                new NoComputerPeriod
+                {
+                    Name = "Get off your computer for a bit",
+                    StartTime = new TimeSpan(11, 0, 0),
+                    EndTime = new TimeSpan(13, 0, 0),
+                    ActionDelay = TimeSpan.FromMinutes(10),
+                    DaysActive = DaySelection.Daily
                 }
             });
 
@@ -53,8 +61,24 @@ namespace PaulZero.RoutineEnforcer.Views.Models.Windows
             {
                 new ScheduledEvent
                 {
+                    Name = "Eat some breakfast",
+                    WarningTime = new TimeSpan(9, 0, 0),
+                    ActionDelay = TimeSpan.FromMinutes(15),
+                    ActionType = EventActionType.LockScreen,
+                    DaysScheduled = DaySelection.Daily
+                },
+                new ScheduledEvent
+                {
                     Name = "Eat some lunch",
-                    WarningTime = new TimeSpan(12, 0, 0),
+                    WarningTime = new TimeSpan(13, 0, 0),
+                    ActionDelay = TimeSpan.FromMinutes(15),
+                    ActionType = EventActionType.LockScreen,
+                    DaysScheduled = DaySelection.Daily
+                },
+                new ScheduledEvent
+                {
+                    Name = "Eat some dinner",
+                    WarningTime = new TimeSpan(18, 0, 0),
                     ActionDelay = TimeSpan.FromMinutes(15),
                     ActionType = EventActionType.LockScreen,
                     DaysScheduled = DaySelection.Daily
