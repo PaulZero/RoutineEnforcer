@@ -10,6 +10,8 @@ namespace PaulZero.RoutineEnforcer.Services.Clock.Interfaces
 
         void RemoveAllCallbacks();
 
+        void Restart();
+
         void Start();
 
         void Stop();

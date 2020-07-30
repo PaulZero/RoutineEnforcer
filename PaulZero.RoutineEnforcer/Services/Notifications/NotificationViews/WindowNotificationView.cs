@@ -43,7 +43,7 @@ namespace PaulZero.RoutineEnforcer.Services.Notifications.NotificationViews
         {
             _window.Closing -= OnWindowClosing;
 
-            App.AppServices.GetService<INotificationService>().CancelToastNotification(NotificationId);
+            App.AppServices.GetService<INotificationService>().SkipToastNotification(NotificationId);
         }
     }
 }

@@ -4,6 +4,7 @@ using PaulZero.RoutineEnforcer.Models;
 using PaulZero.RoutineEnforcer.Services.Clock.Interfaces;
 using PaulZero.RoutineEnforcer.Services.ComputerControl.Interfaces;
 using PaulZero.RoutineEnforcer.Services.Config.Interfaces;
+using PaulZero.RoutineEnforcer.Services.Notifications;
 using PaulZero.RoutineEnforcer.Services.Notifications.Interfaces;
 using PaulZero.RoutineEnforcer.Services.Routine.Interfaces;
 using PaulZero.RoutineEnforcer.Views.Models.Controls;
@@ -53,7 +54,10 @@ namespace PaulZero.RoutineEnforcer.Services.Routine
             {
                 _logger.LogDebug("Restarting routine service...");
 
-                Start();
+                _timedScheduledEvents.Clear();
+                _timedNoComputerPeriods.Clear();
+                _notificationService.AbortAllNotifications();
+                _clockService.Restart();
             }
         }
 
@@ -206,14 +210,31 @@ namespace PaulZero.RoutineEnforcer.Services.Routine
 
             try
             {
-                await _notificationService.ShowCountdownNotificationAsync(title, message, statusText, skipButtonLabel, noComputerPeriod.ActionDelay);
+                var validResults = new[]
+                {
+                    NotificationResult.Skipped,
+                    NotificationResult.Successful
+                };
+
+                var result = await _notificationService.ShowCountdownNotificationAsync(title, message, statusText, skipButtonLabel, noComputerPeriod.ActionDelay);
+
+                if (validResults.Contains(result))
+                {
+                    _actionService.SleepComputer();
+                }
+                else if (result == NotificationResult.Aborted)
+                {
+                    _logger.LogError($"No computer period '{noComputerPeriod.Name}' was aborted.");
+                }
+                else
+                {
+                    _logger.LogError($"Notification for no computer period '{noComputerPeriod.Name}' failed, result was '{result}'.");
+                }
             }
             finally
             {
                 noComputerPeriodCallback.MarkAsFinished();
             }
-
-            _actionService.SleepComputer();
         }
 
         private async Task ShowWarningNotificationAsync(ScheduledEventTimedCallback scheduledEventCallback)
@@ -225,15 +246,32 @@ namespace PaulZero.RoutineEnforcer.Services.Routine
             var title = isSleepAction ? "Sleep Pending" : "Screen Lock Pending";
             var skipButtonLabel = isSleepAction ? "Sleep Now" : "Lock Screen Now";
 
-            await _notificationService.ShowCountdownNotificationAsync(title, scheduledEvent.Name, statusText, skipButtonLabel, scheduledEvent.ActionDelay);
-
-            if (scheduledEvent.ActionType == EventActionType.SleepComputer)
+            var validResults = new[]
             {
-                _actionService.SleepComputer();
+                NotificationResult.Skipped,
+                NotificationResult.Successful
+            };
+
+            var result = await _notificationService.ShowCountdownNotificationAsync(title, scheduledEvent.Name, statusText, skipButtonLabel, scheduledEvent.ActionDelay);
+
+            if (validResults.Contains(result))
+            {
+                if (scheduledEvent.ActionType == EventActionType.SleepComputer)
+                {
+                    _actionService.SleepComputer();
+                }
+                else
+                {
+                    _actionService.LockComputer();
+                }
+            }
+            else if (result == NotificationResult.Aborted)
+            {
+                _logger.LogError($"Scheduled event '{scheduledEvent.Name}' was aborted.");
             }
             else
             {
-                _actionService.LockComputer();
+                _logger.LogError($"Notification for scheduled event '{scheduledEvent.Name}' failed, returning result '{result}'");
             }
         }
     }

@@ -35,6 +35,12 @@ namespace PaulZero.RoutineEnforcer.Services.Clock
             }
         }
 
+        public void Reset()
+        {
+            Cancel();
+            Prepare();
+        }
+
         public void Prepare()
         {
             _cancellationTokenSource = new CancellationTokenSource();

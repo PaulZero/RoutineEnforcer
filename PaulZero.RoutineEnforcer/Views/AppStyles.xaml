@@ -335,6 +335,10 @@
             <Style TargetType="Button" BasedOn="{StaticResource DialogFooterButton}" />
         </Style.Resources>
     </Style>
+
+    <Style TargetType="StackPanel" x:Key="DialogBlankFooter" BasedOn="{StaticResource DialogFooter}">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
     
     <Style TargetType="StackPanel" x:Key="DialogErrorFooter" BasedOn="{StaticResource DialogFooter}">
         <Setter Property="Background" Value="{StaticResource ErrorBackground}"/>

@@ -60,7 +60,7 @@ namespace PaulZero.RoutineEnforcer
 
         private void ConfigureToastNotifications()
         {
-            DesktopNotificationManagerCompat.RegisterAumidAndComServer<ToastNotificationActivator>("PaulZero.WindowsRoutine");
+            DesktopNotificationManagerCompat.RegisterAumidAndComServer<ToastNotificationActivator>("PaulZero.RoutineEnforcer");
 
             DesktopNotificationManagerCompat.RegisterActivator<ToastNotificationActivator>();
         }

@@ -15,9 +15,12 @@
         <ResourceDictionary Source="../AppStyles.xaml" />
     </Window.Resources>
     <StackPanel Style="{StaticResource DialogRoot}">
-        <TextBlock Style="{StaticResource DialogHeader}" Text="{Binding TitleText }"/>
-        <TextBlock Style="{StaticResource DialogBodyTextBlock}" Text="{Binding Message}" />
-        <StackPanel Style="{StaticResource DialogFooter}">
+        <StackPanel Style="{StaticResource DialogBody}">
+            <TextBlock Style="{StaticResource DialogBodyHeading}" Text="{Binding TitleText }"/>
+            <TextBlock Style="{StaticResource DialogBodyTextBlock}" Text="{Binding Message}" />
+        </StackPanel>
+        
+        <StackPanel Style="{StaticResource DialogBlankFooter}">
             <Button Command="{Binding CancelCommand}" Content="{Binding CancelText, FallbackValue=Cancel}" />
             <Button Command="{Binding OkCommand}" Content="{Binding OkText, FallbackValue=OK}" />
         </StackPanel>

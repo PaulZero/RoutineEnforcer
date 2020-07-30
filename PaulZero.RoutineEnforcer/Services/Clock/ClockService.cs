@@ -4,6 +4,7 @@ using PaulZero.RoutineEnforcer.Services.Routine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace PaulZero.RoutineEnforcer.Services.Clock
@@ -71,6 +72,28 @@ namespace PaulZero.RoutineEnforcer.Services.Clock
             _logger.LogDebug($"Removing all callbacks from the clock service.");
 
             _callbacks.Clear();
+        }
+
+        public void Restart()
+        {
+            _logger.LogDebug($"Restarting the clock service...");
+
+            try
+            {
+                _cancellationProvider.Reset();
+
+                _logger.LogDebug("Cancellation provider has been reset.");
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, $"Failed to reset cancellation provider: {exception.Message}");
+            }
+
+            var numCallbacks = _callbacks.Count;
+
+            _callbacks.Clear();
+
+            _logger.LogDebug($"Removed {numCallbacks} registered callback(s).");
         }
 
         public void Start()

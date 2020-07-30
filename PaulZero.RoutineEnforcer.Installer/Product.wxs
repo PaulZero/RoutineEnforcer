@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="Routine Enforcer" Language="1033" Version="0.6.0.0" Manufacturer="PaulZero" UpgradeCode="3ae70114-f321-41cb-83f0-8a4b565c1b49">
+	<Product Id="*" Name="RoutineEnforcer" Language="1033" Version="0.6.0.0" Manufacturer="PaulZero" UpgradeCode="3ae70114-f321-41cb-83f0-8a4b565c1b49">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 		<MediaTemplate EmbedCab="yes" />
 
-		<Feature Id="ProductFeature" Title="PaulZero.RoutineEnforcer.Installer" Level="1">
+		<Feature Id="ProductFeature" Title="PaulZero.RoutineEnforcer" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
       <ComponentRef Id="ApplicationShortcut"/>
 		</Feature>
@@ -42,7 +42,7 @@
                   Description="Stops time blindness from keeping you stuck to your computer until 3am"
                   Target="[#PaulZero.RoutineEnforcer.exe]"
                   WorkingDirectory="INSTALLFOLDER">          
-          <ShortcutProperty Key="System.AppUserModel.ID" Value="PaulZero.WindowsRoutine" />
+          <ShortcutProperty Key="System.AppUserModel.ID" Value="PaulZero.RoutineEnforcer" />
           <ShortcutProperty Key="System.AppUserModel.ToastActivatorCLSID" Value="{7490a6b4-7d4d-46aa-a341-10e48a50c5c4}"/>
         </Shortcut>        
         <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />

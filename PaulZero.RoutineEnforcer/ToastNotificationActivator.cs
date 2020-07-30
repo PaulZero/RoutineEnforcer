@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Uwp.Notifications;
 using PaulZero.RoutineEnforcer.Services.Notifications.Interfaces;
 using System;
@@ -16,6 +17,17 @@ namespace PaulZero.RoutineEnforcer
 
         public override void OnActivated(string invokedArgs, NotificationUserInput userInput, string appUserModelId)
         {
+            try
+            {
+                var logger = App.AppServices.GetService<ILogger<ToastNotificationActivator>>();
+
+                logger.LogDebug($"Received call to OnActivated with args '{invokedArgs}' and appUserModelId '{appUserModelId}'.");
+            }
+            catch
+            {
+                // Arse...
+            }
+
             if (!invokedArgs.Contains(':'))
             {
                 return;
@@ -37,7 +49,7 @@ namespace PaulZero.RoutineEnforcer
                 {
                     var service = App.AppServices.GetService<INotificationService>();
 
-                    service.CancelToastNotification(toastId);
+                    service.SkipToastNotification(toastId);
                 }
             }
         }

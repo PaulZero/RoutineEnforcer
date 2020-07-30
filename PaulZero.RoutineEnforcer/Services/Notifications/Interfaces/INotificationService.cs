@@ -5,8 +5,10 @@ namespace PaulZero.RoutineEnforcer.Services.Notifications.Interfaces
 {
     internal interface INotificationService
     {
-        void CancelToastNotification(Guid id);
+        void AbortAllNotifications();
 
-        Task ShowCountdownNotificationAsync(string title, string message, string progressStatus, string skipButtonLabel, TimeSpan delay);
+        void SkipToastNotification(Guid id);
+
+        Task<NotificationResult> ShowCountdownNotificationAsync(string title, string message, string progressStatus, string skipButtonLabel, TimeSpan delay);
     }
 }

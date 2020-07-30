@@ -12,5 +12,7 @@ namespace PaulZero.RoutineEnforcer.Services.Clock.Interfaces
         void Cancel();
 
         void Prepare();
+
+        void Reset();
     }
 }
